@@ -27,6 +27,17 @@ entity_type = "person"
 index_file = f"./data/indices/list{entity_type}.xml"
 doc = TeiReader(index_file)
 nsmap = doc.nsmap
+
+print("lets create some place keys")
+place_names = set()
+for x in doc.any_xpath('.//tei:person//tei:placeName'):
+    place_names.add(x.text)
+place_names = list(place_names)
+for x in doc.any_xpath('.//tei:person//tei:placeName'):
+    n = place_names.index(x.text)
+    place_name_id = f"#fa_place{n:08}"
+    x.attrib["key"] = place_name_id
+
 items = doc.any_xpath(f".//tei:{entity_type}")
 if LIMIT:
     items = items[:LIMIT]
@@ -55,7 +66,7 @@ for x in tqdm(items, total=len(items)):
         domain=SK,
         event_type="birth",
         verbose=False,
-        # place_id_xpath="//tei:placeName[1]",
+        place_id_xpath="//tei:placeName/@key",
     )
     g += birth_g
     death_g, death_uri, death_timestamp = make_birth_death_entities(
@@ -65,7 +76,7 @@ for x in tqdm(items, total=len(items)):
         event_type="death",
         default_prefix="Tod von",
         verbose=False,
-        # place_id_xpath="//tei:placeName[1]",
+        place_id_xpath="//tei:placeName/@key",
     )
     g += death_g
 g.serialize(f"{rdf_dir}/data.ttl")
