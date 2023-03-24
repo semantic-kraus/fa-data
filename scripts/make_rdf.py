@@ -6,12 +6,11 @@ from acdh_cidoc_pyutils import (
     make_birth_death_entities,
     make_occupations,
     make_entity_label,
-    normalize_string
 )
 from acdh_cidoc_pyutils.namespaces import CIDOC
 from acdh_tei_pyutils.tei import TeiReader
-from rdflib import Graph, Namespace, URIRef, Literal
-from rdflib.namespace import RDF, RDFS
+from rdflib import Graph, Namespace, URIRef
+from rdflib.namespace import RDF
 
 if os.environ.get("NO_LIMIT"):
     LIMIT = False
@@ -27,32 +26,6 @@ entity_type = "person"
 index_file = f"./data/indices/list{entity_type}.xml"
 doc = TeiReader(index_file)
 nsmap = doc.nsmap
-
-print("lets create some place keys")
-place_names = set()
-for x in doc.any_xpath('.//tei:person//tei:placeName'):
-    place_names.add(x.text)
-place_names = list(place_names)
-for x in doc.any_xpath('.//tei:person//tei:placeName'):
-    n = place_names.index(x.text)
-    place_name_id = f"fa_place{n:08}"
-    x.attrib["key"] = f"#{place_name_id}"
-    subj = URIRef(f"{SK}{place_name_id}")
-    g.add((
-        subj, RDF.type, CIDOC["E53_Place"]
-    ))
-    g.add((
-        subj, RDFS.label, Literal(f"Place: {x.text}", lang="en")
-    ))
-    app_uri = URIRef(f"{subj}/appellation/0")
-    g.add((subj, CIDOC["P1_is_identified_by"], app_uri))
-    g.add((app_uri, RDF.type, CIDOC["E33_E41_Linguistic_Appellation"]))
-    g.add(
-        (app_uri, RDFS.label, Literal(normalize_string(x.text), lang="de"))
-    )
-    g.add(
-        (app_uri, RDF.value, Literal(normalize_string(x.text)))
-    )
 items = doc.any_xpath(f".//tei:{entity_type}")
 if LIMIT:
     items = items[:LIMIT]
@@ -86,4 +59,20 @@ for x in tqdm(items, total=len(items)):
         place_id_xpath="//tei:placeName/@key",
     )
     g += death_g
+
+entity_type = "place"
+index_file = f"./data/indices/list{entity_type}.xml"
+doc = TeiReader(index_file)
+nsmap = doc.nsmap
+items = doc.any_xpath(f".//tei:{entity_type}")
+if LIMIT:
+    items = items[:LIMIT]
+print(f"converting {entity_type}s derived from {index_file}")
+for x in tqdm(items, total=len(items)):
+    xml_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
+    item_id = f"{SK}{xml_id}"
+    subj = URIRef(item_id)
+    g.add((subj, RDF.type, CIDOC["E33_Place"]))
+    g += make_e42_identifiers(subj, x, type_domain=f"{SK}types", default_lang="und", same_as=False)
+    g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
 g.serialize(f"{rdf_dir}/data.ttl")
