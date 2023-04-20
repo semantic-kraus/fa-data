@@ -45,20 +45,22 @@ for x in tqdm(items, total=len(items)):
         x,
         domain=SK,
         event_type="birth",
-        verbose=False,
+        verbose=True,
         place_id_xpath="//tei:placeName/@key",
     )
-    g += birth_g
+    if bool(birth_uri and birth_timestamp):
+        g += birth_g
     death_g, death_uri, death_timestamp = make_birth_death_entities(
         subj,
         x,
         domain=SK,
         event_type="death",
         default_prefix="Tod von",
-        verbose=False,
+        verbose=True,
         place_id_xpath="//tei:placeName/@key",
     )
-    g += death_g
+    if bool(birth_uri and birth_timestamp):
+        g += death_g
 
 entity_type = "place"
 index_file = f"./data/indices/list{entity_type}.xml"
