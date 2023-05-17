@@ -1,0 +1,7 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix fa: <https://sk.acdh.oeaw.ac.at/project/fackel-online> .
+@prefix sk: <https://sk.acdh.oeaw.ac.at/> .
+
+
+fa: dct:title "Die Fackel online"@de ;
+    dct:bibliographicCitation """AAC - Austrian Academy Corpus: AAC-FACKEL. Online Version: »Die Fackel. Herausgeber: Karl Kraus, Wien 1899-1936« AAC Digital Edition No 1"""  .
