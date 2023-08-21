@@ -59,7 +59,7 @@ for x in tqdm(items, total=len(items)):
         verbose=True,
         place_id_xpath="//tei:placeName/@key",
     )
-    if bool(birth_uri and birth_timestamp):
+    if bool(death_uri and death_timestamp):
         g += death_g
 
 entity_type = "place"
