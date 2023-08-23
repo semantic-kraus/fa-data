@@ -8,8 +8,12 @@ doc = TeiReader(index_file)
 
 for x in doc.any_xpath(".//tei:listPerson/tei:person[@xml:id]"):
     entity_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
+    x.attrib["status"] = "todo"
+
+for x in doc.any_xpath(".//tei:listPerson/tei:person[@xml:id]"):
+    entity_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
+    x.attrib["status"] = "checked"
     if entity_id == break_id:
-        x.attrib["status"] = "checked"
-    else:
-        x.attrib["status"] = "todo"
+        break
+    
 doc.tree_to_file(index_file)
