@@ -74,7 +74,7 @@ for x in tqdm(items, total=len(items)):
     xml_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
     item_id = f"{SK}{xml_id}"
     subj = URIRef(item_id)
-    g.add((subj, RDF.type, CIDOC["E33_Place"]))
+    g.add((subj, RDF.type, CIDOC["E53_Place"]))
     g += make_e42_identifiers(subj, x, type_domain=f"{SK}types", default_lang="und", same_as=False)
     g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
 g.serialize(f"{rdf_dir}/data.ttl")
