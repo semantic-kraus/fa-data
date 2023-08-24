@@ -36,7 +36,7 @@ for x in doc.any_xpath(".//tei:place"):
         continue
     try:
         pmb_id = int(df.loc[entity_id]["pmb_id"].split(",")[0])
-    except:
+    except ValueError:
         pmb_id = False
     if pmb_id:
         idno = ET.Element("{http://www.tei-c.org/ns/1.0}idno")
