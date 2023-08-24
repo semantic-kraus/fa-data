@@ -2,7 +2,7 @@ from acdh_tei_pyutils.tei import TeiReader
 
 
 index_file = "./data/indices/listperson.xml"
-break_id = "p_46555" 
+break_id = "p_46555"
 # see https://github.com/semantic-kraus/fa-data/commit/e279e4ad182c14e15a03825ed3e32e1d327614e5
 
 doc = TeiReader(index_file)
