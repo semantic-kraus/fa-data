@@ -368,7 +368,7 @@ def create_birth_death_settlement_graph(
             subj=place_uri,
             subj_suffix="appellations/0",
             uri_prefix=uri_prefix,
-            type_suffix="types/place/placename",
+            type_suffix="types/place/placename/pref",
             custom_identifier_class=CIDOC["E33_E41_Linguistic_Appellation"]
         )
         g += g1
