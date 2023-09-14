@@ -2,7 +2,8 @@ import os
 from tqdm import tqdm
 from acdh_cidoc_pyutils import (
     make_birth_death_entities,
-    make_entity_label
+    make_entity_label,
+    make_appellations
 )
 from utils.utilities import (
     make_e42_identifiers_utils,
@@ -195,44 +196,39 @@ for x in tqdm(items, total=len(items)):
                 uri_prefix=SK,
                 node_attrib="key"
             )
-    # birth_g, birth_uri, birth_timestamp = make_birth_death_entities(
-    #     subj,
-    #     x,
-    #     domain=SK,
-    #     event_type="birth",
-    #     verbose=True,
-    #     place_id_xpath="//tei:placeName/@key",
-    # )
-    # if bool(birth_uri and birth_timestamp):
-    #     g += birth_g
-    # death_g, death_uri, death_timestamp = make_birth_death_entities(
-    #     subj,
-    #     x,
-    #     domain=SK,
-    #     event_type="death",
-    #     default_prefix="Tod von",
-    #     verbose=True,
-    #     place_id_xpath="//tei:placeName/@key",
-    # )
-    # if bool(death_uri and death_timestamp):
-    #     g += death_g
 
-# entity_type = "place"
-# index_file = f"./data/indices/list{entity_type}.xml"
-# doc = TeiReader(index_file)
-# nsmap = doc.nsmap
-# items = doc.any_xpath(f".//tei:{entity_type}")
-# if LIMIT:
-#     items = items[:LIMIT]
+entity_type = "place"
+index_file = f"./data/indices/list{entity_type}.xml"
+doc = TeiReader(index_file)
+nsmap = doc.nsmap
+items = doc.any_xpath(f".//tei:{entity_type}")
+if LIMIT:
+    items = items[:LIMIT]
 
-# print(f"converting {entity_type}s derived from {index_file}")
-# for x in tqdm(items, total=len(items)):
-#     xml_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
-#     item_id = f"{SK}{xml_id}"
-#     subj = URIRef(item_id)
-#     g.add((subj, RDF.type, CIDOC["E53_Place"]))
-#     g += make_e42_identifiers(subj, x, type_domain=f"{SK}types", default_lang="und", same_as=False)
-#     g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
+print(f"converting {entity_type}s derived from {index_file}")
+for x in tqdm(items, total=len(items)):
+    xml_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
+    item_id = f"{SK}{xml_id}"
+    subj = URIRef(item_id)
+    g.add((subj, RDF.type, CIDOC["E53_Place"]))
+    g += make_e42_identifiers_utils(subj, x, type_domain=f"{SK}types", default_lang="en", same_as=False)
+    g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
+    # # create appellations
+    # g += create_triple_from_node(
+    #     node=x,
+    #     subj=subj,
+    #     subj_suffix="appellation",
+    #     pred=CIDOC["P2_has_type"],
+    #     sbj_class=CIDOC["E33_E41_Linguistic_Appellation"],
+    #     obj_class=CIDOC["E55_Type"],
+    #     obj_node_xpath="./tei:placeName",
+    #     obj_node_value_xpath="./@subtype",
+    #     obj_node_value_alt_xpath_or_str="pref",
+    #     obj_prefix=f"{SK}types",
+    #     default_lang="und",
+    #     value_literal=True,
+    #     identifier=CIDOC["P1_is_identified_by"]
+    # )
 
 print("writing graph to file: data.trig and .ttl")
 g_all = ConjunctiveGraph(store=project_store)

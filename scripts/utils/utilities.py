@@ -18,7 +18,7 @@ def make_e42_identifiers_utils(
     subj: URIRef,
     node: Element,
     type_domain="https://foo-bar/",
-    default_lang="en",
+    default_lang="und",
     set_lang=False,
     same_as=True,
     default_prefix="Identifier: ",
@@ -366,7 +366,7 @@ def create_birth_death_settlement_graph(
         g1, identifier_uri = create_e42_or_custom_class(
             node=node,
             subj=place_uri,
-            subj_suffix="appellations/0",
+            subj_suffix="appellation/0",
             uri_prefix=uri_prefix,
             type_suffix="types/place/placename/pref",
             custom_identifier_class=CIDOC["E33_E41_Linguistic_Appellation"]
@@ -378,21 +378,21 @@ def create_birth_death_settlement_graph(
             node=place_node,
             subject_uri=place_uri,
             l_prefix="",
-            default_lang="de",
+            default_lang="und",
             predicate=RDFS.label
         )
         g += create_object_literal_graph(
             node=place_node,
             subject_uri=identifier_uri,
             l_prefix="",
-            default_lang="de",
+            default_lang="und",
             predicate=RDFS.label
         )
         g += create_object_literal_graph(
             node=place_node,
             subject_uri=identifier_uri,
             l_prefix="",
-            default_lang="en",
+            default_lang="und",
             predicate=RDF.value
         )
         # from node via xpath
