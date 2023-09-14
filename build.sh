@@ -8,3 +8,4 @@ python scripts/make_rdf.py
 
 python scripts/make_index.py
 cp rdf/*.ttl html/
+cp rdf/*.trig html/
