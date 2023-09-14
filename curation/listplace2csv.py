@@ -10,7 +10,7 @@ for x in doc.any_xpath(".//tei:place[@xml:id]"):
     item["id"] = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
     item["checked"] = ""
     full_name = x.xpath("./tei:placeName/text()", namespaces=doc.nsmap)[0]
-    full_name = full_name.replace('"', '')
+    full_name = full_name.replace('"', "")
     if "/" in full_name:
         parts = full_name.split("/")
         name = parts[0]
