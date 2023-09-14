@@ -141,17 +141,22 @@ def create_obj_value_graph(
         except IndexError:
             if xpath_alt_or_str == "iterator":
                 obj_node_value = iterator
-            else:
+            elif "/" not in xpath_alt_or_str:
                 obj_node_value = xpath_alt_or_str
-    if obj_node_value == skip_value:
-        return (None, None)
-    if custom_obj_uri:
-        object_uri = URIRef(f"{prefix}/{custom_obj_uri}")
+            else:
+                obj_node_value = None
+    if obj_node_value is not None:
+        if obj_node_value == skip_value:
+            return (None, None)
+        if custom_obj_uri:
+            object_uri = URIRef(f"{prefix}/{custom_obj_uri}")
+        else:
+            object_uri = URIRef(f"{prefix}/{parent_node_name}/{obj_name}/{obj_node_value}")
+        if obj_class:
+            g.add((object_uri, RDF.type, obj_class))
+        g.add((subject_uri, predicate, object_uri))
     else:
-        object_uri = URIRef(f"{prefix}/{parent_node_name}/{obj_name}/{obj_node_value}")
-    if obj_class:
-        g.add((object_uri, RDF.type, obj_class))
-    g.add((subject_uri, predicate, object_uri))
+        object_uri = None
     return (g, object_uri)
 
 
@@ -351,7 +356,7 @@ def create_birth_death_settlement_graph(
 ) -> Graph:
     g = Graph()
     try:
-        place_id = node.attrib[node_attrib]
+        place_id = node.attrib[node_attrib][1:]
     except KeyError:
         place_id = None
     if place_id is not None:
@@ -368,19 +373,19 @@ def create_birth_death_settlement_graph(
         )
         g += g1
         # literals from node
-        place_node = node.xpath(normalize_string("./tei:placeName"), namespaces=namespaces)[0]
+        place_node = node.xpath(normalize_string("./self::tei:placeName"), namespaces=namespaces)[0]
         g += create_object_literal_graph(
             node=place_node,
             subject_uri=place_uri,
             l_prefix="",
-            default_lang="en",
+            default_lang="de",
             predicate=RDFS.label
         )
         g += create_object_literal_graph(
             node=place_node,
             subject_uri=identifier_uri,
             l_prefix="",
-            default_lang="en",
+            default_lang="de",
             predicate=RDFS.label
         )
         g += create_object_literal_graph(

@@ -1,11 +1,8 @@
 import os
 from tqdm import tqdm
 from acdh_cidoc_pyutils import (
-    make_appellations,
-    make_e42_identifiers,
     make_birth_death_entities,
-    make_occupations,
-    make_entity_label,
+    make_entity_label
 )
 from utils.utilities import (
     make_e42_identifiers_utils,
@@ -58,7 +55,9 @@ for x in tqdm(items, total=len(items)):
     name_node = x.xpath(".//tei:persName", namespaces=nsmap)
     item_label = make_entity_label(name_node[0])[0]
     g.add((subj, RDF.type, CIDOC["E21_Person"]))
-    g += make_e42_identifiers(subj, x, type_domain=f"{SK}types", default_lang="und", same_as=False)
+    g += make_e42_identifiers_utils(
+        subj, x, type_domain=f"{SK}types", default_lang="en", same_as=False
+    )
     # g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
     # create appellations
     g += create_triple_from_node(
@@ -105,33 +104,41 @@ for x in tqdm(items, total=len(items)):
     )
     # create birth and death
     if x.xpath("./tei:birth", namespaces=nsmap):
-        try:
-            date_node = x.xpath("./tei:birth/tei:date[@type]", namespaces=nsmap)[0]
-        except IndexError:
-            date_node = None
-        if date_node is not None:
-            date_type = date_node.attrib["type"]
-            if date_type == "approx":
-                date_type_uri = URIRef(f"{SK}types/date/{date_type}")
+        date_test = x.xpath("./tei:birth/@when", namespaces=nsmap)[0]
+        if date_test != "leer":
+            date_test = True,
         else:
-            date_type_uri = False
-        birth_g, birth_uri, birth_timestamp = make_birth_death_entities(
-            subj,
-            x,
-            domain=SK,
-            event_type="birth",
-            type_uri=date_type_uri,
-            verbose=False,
-            default_prefix="Birth of",
-            default_lang="en",
-            date_node_xpath="/self::tei:birth",
-            place_id_xpath="//tei:settlement[1]/@key",
-        )
-        g += birth_g
-    if x.xpath("./tei:birth[./tei:settlement]", namespaces=nsmap):
+            date_test = False
+        if date_test:
+            try:
+                date_node = x.xpath("./tei:birth[@type]", namespaces=nsmap)[0]
+            except IndexError:
+                date_node = None
+            if date_node is not None:
+                date_type = date_node.attrib["type"]
+                if date_type == "approx":
+                    date_type_uri = URIRef(f"{SK}types/date/{date_type}")
+                else:
+                    date_type_uri = False
+            else:
+                date_type_uri = False
+            birth_g, birth_uri, birth_timestamp = make_birth_death_entities(
+                subj,
+                x,
+                domain=SK,
+                event_type="birth",
+                type_uri=date_type_uri,
+                verbose=False,
+                default_prefix="Birth of",
+                default_lang="en",
+                date_node_xpath="/self::tei:birth",
+                place_id_xpath="//tei:placeName[1]/@key",
+            )
+            g += birth_g
+    if x.xpath("./tei:birth[./tei:placeName]", namespaces=nsmap):
         try:
             birth_place_node = x.xpath(
-                "./tei:birth/tei:settlement", namespaces=nsmap
+                "./tei:birth/tei:placeName", namespaces=nsmap
             )[0]
         except IndexError:
             birth_place_node = None
@@ -143,33 +150,41 @@ for x in tqdm(items, total=len(items)):
                 node_attrib="key"
             )
     if x.xpath("./tei:death", namespaces=nsmap):
-        try:
-            date_node = x.xpath("./tei:death/tei:date[@type]", namespaces=nsmap)[0]
-        except IndexError:
-            date_node = None
-        if date_node is not None:
-            date_type = date_node.attrib["type"]
-            if date_type == "approx":
-                date_type_uri = URIRef(f"{SK}types/date/{date_type}")
+        date_test = x.xpath("./tei:death/@when", namespaces=nsmap)[0]
+        if date_test != "leer":
+            date_test = True,
         else:
-            date_type_uri = False
-        death_g, death_uri, death_timestamp = make_birth_death_entities(
-            subj,
-            x,
-            domain=SK,
-            event_type="death",
-            type_uri=date_type_uri,
-            verbose=False,
-            default_prefix="Death of",
-            default_lang="en",
-            date_node_xpath="/tei:date[1]",
-            place_id_xpath="//tei:settlement[1]/@key",
-        )
-        g += death_g
-    if x.xpath("./tei:death[./tei:settlement]", namespaces=nsmap):
+            date_test = False
+        if date_test:
+            try:
+                date_node = x.xpath("./tei:death[@type]", namespaces=nsmap)[0]
+            except IndexError:
+                date_node = None
+            if date_node is not None:
+                date_type = date_node.attrib["type"]
+                if date_type == "approx":
+                    date_type_uri = URIRef(f"{SK}types/date/{date_type}")
+                else:
+                    date_type_uri = False
+            else:
+                date_type_uri = False
+            death_g, death_uri, death_timestamp = make_birth_death_entities(
+                subj,
+                x,
+                domain=SK,
+                event_type="death",
+                type_uri=date_type_uri,
+                verbose=False,
+                default_prefix="Death of",
+                default_lang="en",
+                date_node_xpath="/self::tei:death",
+                place_id_xpath="//tei:placeName[1]/@key",
+            )
+            g += death_g
+    if x.xpath("./tei:death[./tei:placeName]", namespaces=nsmap):
         try:
             death_place_node = x.xpath(
-                "./tei:death/tei:settlement", namespaces=nsmap
+                "./tei:death/tei:placeName", namespaces=nsmap
             )[0]
         except IndexError:
             death_place_node = None
@@ -219,6 +234,7 @@ for x in tqdm(items, total=len(items)):
 #     g += make_e42_identifiers(subj, x, type_domain=f"{SK}types", default_lang="und", same_as=False)
 #     g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
 
+print("writing graph to file: data.trig and .ttl")
 g_all = ConjunctiveGraph(store=project_store)
 g_all.serialize(f"{rdf_dir}/data.trig", format="trig")
 g_all.serialize(f"{rdf_dir}/data.ttl", format="ttl")
