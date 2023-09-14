@@ -2,8 +2,7 @@ import os
 from tqdm import tqdm
 from acdh_cidoc_pyutils import (
     make_birth_death_entities,
-    make_entity_label,
-    make_appellations
+    make_entity_label
 )
 from utils.utilities import (
     make_e42_identifiers_utils,
@@ -55,7 +54,14 @@ for x in tqdm(items, total=len(items)):
     subj = URIRef(item_id)
     name_node = x.xpath(".//tei:persName", namespaces=nsmap)
     item_label = make_entity_label(name_node[0])[0]
-    g.add((subj, RDF.type, CIDOC["E21_Person"]))
+    try:
+        item_type = x.attrib["type"]
+    except KeyError:
+        item_type = False
+    if item_type and item_type == "group":
+        g.add((subj, RDF.type, CIDOC["E74_Group"]))
+    else:
+        g.add((subj, RDF.type, CIDOC["E21_Person"]))
     g.add((subj, RDFS.label, Literal(item_label, lang="und")))
     g += make_e42_identifiers_utils(
         subj, x, type_domain=f"{SK}types", default_lang="en", same_as=False
