@@ -25,7 +25,7 @@ if os.environ.get("NO_LIMIT"):
     LIMIT = False
     print("no limit")
 else:
-    LIMIT = 100
+    LIMIT = 4000
 
 rdf_dir = "./rdf"
 os.makedirs(rdf_dir, exist_ok=True)
