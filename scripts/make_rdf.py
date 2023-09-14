@@ -12,8 +12,8 @@ from utils.utilities import (
 )
 from acdh_cidoc_pyutils.namespaces import CIDOC, FRBROO
 from acdh_tei_pyutils.tei import TeiReader
-from rdflib import Graph, Namespace, URIRef, plugin, ConjunctiveGraph
-from rdflib.namespace import RDF
+from rdflib import Graph, Namespace, URIRef, plugin, ConjunctiveGraph, Literal
+from rdflib.namespace import RDF, RDFS
 from rdflib.store import Store
 
 
@@ -56,6 +56,7 @@ for x in tqdm(items, total=len(items)):
     name_node = x.xpath(".//tei:persName", namespaces=nsmap)
     item_label = make_entity_label(name_node[0])[0]
     g.add((subj, RDF.type, CIDOC["E21_Person"]))
+    g.add((subj, RDFS.label, Literal(item_label, lang="und")))
     g += make_e42_identifiers_utils(
         subj, x, type_domain=f"{SK}types", default_lang="en", same_as=False
     )
@@ -210,25 +211,28 @@ for x in tqdm(items, total=len(items)):
     xml_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
     item_id = f"{SK}{xml_id}"
     subj = URIRef(item_id)
+    name_node = x.xpath(".//tei:placeName", namespaces=nsmap)
+    item_label = make_entity_label(name_node[0])[0]
     g.add((subj, RDF.type, CIDOC["E53_Place"]))
+    g.add((subj, RDFS.label, Literal(item_label, lang="und")))
     g += make_e42_identifiers_utils(subj, x, type_domain=f"{SK}types", default_lang="en", same_as=False)
-    g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
-    # # create appellations
-    # g += create_triple_from_node(
-    #     node=x,
-    #     subj=subj,
-    #     subj_suffix="appellation",
-    #     pred=CIDOC["P2_has_type"],
-    #     sbj_class=CIDOC["E33_E41_Linguistic_Appellation"],
-    #     obj_class=CIDOC["E55_Type"],
-    #     obj_node_xpath="./tei:placeName",
-    #     obj_node_value_xpath="./@subtype",
-    #     obj_node_value_alt_xpath_or_str="pref",
-    #     obj_prefix=f"{SK}types",
-    #     default_lang="und",
-    #     value_literal=True,
-    #     identifier=CIDOC["P1_is_identified_by"]
-    # )
+    # g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
+    # create appellations
+    g += create_triple_from_node(
+        node=x,
+        subj=subj,
+        subj_suffix="appellation",
+        pred=CIDOC["P2_has_type"],
+        sbj_class=CIDOC["E33_E41_Linguistic_Appellation"],
+        obj_class=CIDOC["E55_Type"],
+        obj_node_xpath="./tei:placeName",
+        obj_node_value_xpath="./@subtype",
+        obj_node_value_alt_xpath_or_str="pref",
+        obj_prefix=f"{SK}types",
+        default_lang="und",
+        value_literal=True,
+        identifier=CIDOC["P1_is_identified_by"]
+    )
 
 print("writing graph to file: data.trig and .ttl")
 g_all = ConjunctiveGraph(store=project_store)
