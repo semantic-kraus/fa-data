@@ -7,13 +7,21 @@ from acdh_cidoc_pyutils import (
     make_occupations,
     make_entity_label,
 )
-from acdh_cidoc_pyutils.namespaces import CIDOC
+from acdh_cidoc_pyutils.namespaces import CIDOC, FRBROO
 from acdh_tei_pyutils.tei import TeiReader
-from rdflib import Graph, Namespace, URIRef
+from rdflib import Graph, Namespace, URIRef, plugin, ConjunctiveGraph
 from rdflib.namespace import RDF
+from rdflib.store import Store
+
+
+FA = Namespace("https://sk.acdh.oeaw.ac.at/project/fackel")
+
+store = plugin.get("Memory", Store)()
+project_store = plugin.get("Memory", Store)()
 
 if os.environ.get("NO_LIMIT"):
     LIMIT = False
+    print("no limit")
 else:
     LIMIT = 100
 
@@ -21,7 +29,13 @@ rdf_dir = "./rdf"
 os.makedirs(rdf_dir, exist_ok=True)
 domain = "https://sk.acdh.oeaw.ac.at/"
 SK = Namespace(domain)
-g = Graph()
+
+project_uri = URIRef(f"{SK}project/fackel")
+g = Graph(identifier=project_uri, store=project_store)
+g.bind("cidoc", CIDOC)
+g.bind("frbroo", FRBROO)
+g.bind("sk", SK)
+
 entity_type = "person"
 index_file = f"./data/indices/list{entity_type}.xml"
 doc = TeiReader(index_file)
@@ -29,6 +43,8 @@ nsmap = doc.nsmap
 items = doc.any_xpath(f".//tei:{entity_type}")
 if LIMIT:
     items = items[:LIMIT]
+
+
 print(f"converting {entity_type}s derived from {index_file}")
 for x in tqdm(items, total=len(items)):
     xml_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
@@ -69,6 +85,7 @@ nsmap = doc.nsmap
 items = doc.any_xpath(f".//tei:{entity_type}")
 if LIMIT:
     items = items[:LIMIT]
+
 print(f"converting {entity_type}s derived from {index_file}")
 for x in tqdm(items, total=len(items)):
     xml_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
@@ -77,4 +94,7 @@ for x in tqdm(items, total=len(items)):
     g.add((subj, RDF.type, CIDOC["E53_Place"]))
     g += make_e42_identifiers(subj, x, type_domain=f"{SK}types", default_lang="und", same_as=False)
     g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
-g.serialize(f"{rdf_dir}/data.ttl")
+
+g_all = ConjunctiveGraph(store=project_store)
+g_all.serialize(f"{rdf_dir}/data.trig", format="trig")
+g_all.serialize(f"{rdf_dir}/data.ttl", format="ttl")
