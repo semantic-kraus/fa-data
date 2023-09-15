@@ -132,7 +132,7 @@ def create_obj_value_graph(
     custom_obj_uri: str | bool = False,
 ) -> tuple[Graph, URIRef]:
     g = Graph()
-    obj_name = node.tag.split("}")[-1]
+    obj_name = node.tag.split("}")[-1].lower()
     try:
         obj_node_value = node.xpath(xpath, namespaces=namespaces)[0]
     except IndexError:
@@ -182,7 +182,7 @@ def create_triple_from_node(
 ) -> Graph:
     g = Graph()
     predicate = pred
-    node_name = node.tag.split("}")[-1]
+    node_name = node.tag.split("}")[-1].lower()
     if subj_suffix:
         subject = URIRef(f"{subj}/{subj_suffix}")
     else:
@@ -254,7 +254,7 @@ def create_triple_from_node(
                             "uri": subject_uri,
                             "literal": str(literal)
                         }
-                        if check_for_equal_values and len(check_for_equal_values) > 1 and check_for_equal_values[i - 1]["literal"] == str(literal):
+                        if len(check_for_equal_values) > 1 and check_for_equal_values[i - 1]["literal"] == str(literal):
                             g.add((check_for_equal_values[i - 1]["uri"], predicate, obj_uri))
                         else:
                             if identifier:
