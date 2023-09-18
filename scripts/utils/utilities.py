@@ -267,6 +267,13 @@ def create_triple_from_node(
                                 g += gl1
                             if gl2:
                                 g += gl2
+                    else:
+                        if identifier:
+                            g.add((subj, identifier, subject_uri))
+                        if sbj_class:
+                            g.add((subject_uri, RDF.type, sbj_class))
+                        if g1:
+                            g += g1
                 if date and obj_uri:
                     not_known_value = "undefined"
                     begin, end = extract_begin_end(obj, fill_missing=False)
