@@ -25,7 +25,7 @@ if os.environ.get("NO_LIMIT"):
     LIMIT = False
     print("no limit")
 else:
-    LIMIT = 4000
+    LIMIT = 1000
 
 rdf_dir = "./rdf"
 os.makedirs(rdf_dir, exist_ok=True)
@@ -89,6 +89,7 @@ for x in tqdm(items, total=len(items)):
         node=x,
         subj=subj,
         subj_suffix="appellation",
+        sbj_class=CIDOC["E33_E41_Linguistic_Appellation"],
         pred=CIDOC["P2_has_type"],
         default_lang="und",
         obj_class=CIDOC["E55_Type"],
@@ -97,6 +98,7 @@ for x in tqdm(items, total=len(items)):
         obj_node_value_alt_xpath_or_str="./parent::tei:person/tei:sex/@value",
         obj_prefix=f"{SK}types",
         skip_value="not-set",
+        identifier=CIDOC["P1_is_identified_by"],
         special_sorting=True,
     )
     # g += make_occupations(subj, x, default_lang="de")[0]

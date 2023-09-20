@@ -158,6 +158,7 @@ def create_obj_value_graph(
         g.add((subject_uri, predicate, object_uri))
     else:
         object_uri = None
+        g = None
     return (g, object_uri)
 
 
@@ -206,6 +207,7 @@ def create_triple_from_node(
             obj_node = None
         if isinstance(obj_node, list):
             map_triples = {}
+            seq = 0
             for i, obj in enumerate(obj_node):
                 subject_uri = URIRef(f"{subject}/{i}")
                 if label_prefix:
@@ -252,7 +254,7 @@ def create_triple_from_node(
                     )
                     if obj_uri is not None:
                         if special_sorting:
-                            map_triples[i] = {
+                            map_triples[seq] = {
                                 "uri": subject_uri,
                                 "literal": str(literal)
                             }
@@ -269,11 +271,11 @@ def create_triple_from_node(
                                     g += gl1
                                 if value_literal and gl2:
                                     g += gl2
-                            elif len(map_triples) == 2 and map_triples[0]["literal"] == str(literal):
-                                g.add((map_triples[0]["uri"], predicate, obj_uri))
-                            elif len(map_triples) == 3 and map_triples[1]["literal"] != str(literal) and \
-                                    map_triples[0]["literal"] == str(literal):
-                                g.add((map_triples[0]["uri"], predicate, obj_uri))
+                            elif len(map_triples) == 2 and map_triples[seq - 1]["literal"] == str(literal):
+                                g.add((map_triples[seq - 1]["uri"], predicate, obj_uri))
+                            elif len(map_triples) == 3 and map_triples[seq - 1]["literal"] != str(literal) and \
+                                    map_triples[seq - 2]["literal"] == str(literal):
+                                g.add((map_triples[seq - 2]["uri"], predicate, obj_uri))
                             else:
                                 if identifier:
                                     g.add((subj, identifier, subject_uri))
@@ -287,6 +289,7 @@ def create_triple_from_node(
                                     g += gl1
                                 if value_literal and gl2:
                                     g += gl2
+                            seq += 1
                         else:
                             if obj_class:
                                 g.add((obj_uri, RDF.type, obj_class))
