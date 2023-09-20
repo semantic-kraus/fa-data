@@ -75,13 +75,14 @@ for x in tqdm(items, total=len(items)):
         pred=CIDOC["P2_has_type"],
         sbj_class=CIDOC["E33_E41_Linguistic_Appellation"],
         obj_class=CIDOC["E55_Type"],
-        obj_node_xpath="./tei:persName",
+        obj_node_xpath="./tei:persName[@type='sk']",
         obj_node_value_xpath="./@subtype",
         obj_node_value_alt_xpath_or_str="pref",
         obj_prefix=f"{SK}types",
         default_lang="und",
         value_literal=True,
-        identifier=CIDOC["P1_is_identified_by"]
+        identifier=CIDOC["P1_is_identified_by"],
+        special_sorting=True,
     )
     # add additional type for appellations
     g += create_triple_from_node(
@@ -89,12 +90,14 @@ for x in tqdm(items, total=len(items)):
         subj=subj,
         subj_suffix="appellation",
         pred=CIDOC["P2_has_type"],
+        default_lang="und",
         obj_class=CIDOC["E55_Type"],
         obj_node_xpath="./tei:persName",
         obj_node_value_xpath="./@sex",
         obj_node_value_alt_xpath_or_str="./parent::tei:person/tei:sex/@value",
         obj_prefix=f"{SK}types",
-        skip_value="not-set"
+        skip_value="not-set",
+        special_sorting=True,
     )
     # g += make_occupations(subj, x, default_lang="de")[0]
     # add occupations

@@ -128,16 +128,19 @@ def create_obj_value_graph(
     skip_value: str | bool = False,
     prefix: str | bool = False,
     predicate: Namespace | bool = False,
-    obj_class: Namespace | bool = False,
     custom_obj_uri: str | bool = False,
 ) -> tuple[Graph, URIRef]:
     g = Graph()
     obj_name = node.tag.split("}")[-1].lower()
     try:
         obj_node_value = node.xpath(xpath, namespaces=namespaces)[0]
+        if isinstance(obj_node_value, str) and len(obj_node_value) == 0:
+            obj_node_value = None
     except IndexError:
         try:
             obj_node_value = node.xpath(xpath_alt_or_str, namespaces=namespaces)[0]
+            if isinstance(obj_node_value, str) and len(obj_node_value) == 0:
+                obj_node_value = None
         except IndexError:
             if xpath_alt_or_str == "iterator":
                 obj_node_value = iterator
@@ -152,8 +155,6 @@ def create_obj_value_graph(
             object_uri = URIRef(f"{prefix}/{custom_obj_uri}")
         else:
             object_uri = URIRef(f"{prefix}/{parent_node_name}/{obj_name}/{obj_node_value}")
-        if obj_class:
-            g.add((object_uri, RDF.type, obj_class))
         g.add((subject_uri, predicate, object_uri))
     else:
         object_uri = None
@@ -179,6 +180,7 @@ def create_triple_from_node(
     node_attribute: str | bool = False,
     identifier: Namespace | bool = False,
     date: bool = False,
+    special_sorting: bool = False,
 ) -> Graph:
     g = Graph()
     predicate = pred
@@ -203,7 +205,7 @@ def create_triple_from_node(
             print("##################################")
             obj_node = None
         if isinstance(obj_node, list):
-            check_for_equal_values = {}
+            map_triples = {}
             for i, obj in enumerate(obj_node):
                 subject_uri = URIRef(f"{subject}/{i}")
                 if label_prefix:
@@ -229,7 +231,7 @@ def create_triple_from_node(
                         predicate=RDFS.label
                     )
                 if value_literal:
-                    gl2, literal = create_object_literal_graph(
+                    gl2, value = create_object_literal_graph(
                         node=obj,
                         subject_uri=subject_uri,
                         l_prefix=l_prefix,
@@ -246,34 +248,58 @@ def create_triple_from_node(
                         iterator=i,
                         skip_value=skip_value,
                         prefix=obj_prefix,
-                        predicate=predicate,
-                        obj_class=obj_class
+                        predicate=predicate
                     )
-                    if literal and obj_uri:
-                        check_for_equal_values[i] = {
-                            "uri": subject_uri,
-                            "literal": str(literal)
-                        }
-                        if len(check_for_equal_values) > 1 and check_for_equal_values[i - 1]["literal"] == str(literal):
-                            g.add((check_for_equal_values[i - 1]["uri"], predicate, obj_uri))
+                    if obj_uri is not None:
+                        if special_sorting:
+                            map_triples[i] = {
+                                "uri": subject_uri,
+                                "literal": str(literal)
+                            }
+                            if len(map_triples) == 1:
+                                if identifier:
+                                    g.add((subj, identifier, subject_uri))
+                                if obj_class:
+                                    g.add((obj_uri, RDF.type, obj_class))
+                                if sbj_class:
+                                    g.add((subject_uri, RDF.type, sbj_class))
+                                if g1:
+                                    g += g1
+                                if default_lang and gl1:
+                                    g += gl1
+                                if value_literal and gl2:
+                                    g += gl2
+                            elif len(map_triples) == 2 and map_triples[0]["literal"] == str(literal):
+                                g.add((map_triples[0]["uri"], predicate, obj_uri))
+                            elif len(map_triples) == 3 and map_triples[1]["literal"] != str(literal) and \
+                                    map_triples[0]["literal"] == str(literal):
+                                g.add((map_triples[0]["uri"], predicate, obj_uri))
+                            else:
+                                if identifier:
+                                    g.add((subj, identifier, subject_uri))
+                                if obj_class:
+                                    g.add((obj_uri, RDF.type, obj_class))
+                                if sbj_class:
+                                    g.add((subject_uri, RDF.type, sbj_class))
+                                if g1:
+                                    g += g1
+                                if default_lang and gl1:
+                                    g += gl1
+                                if value_literal and gl2:
+                                    g += gl2
                         else:
+                            if obj_class:
+                                g.add((obj_uri, RDF.type, obj_class))
                             if identifier:
                                 g.add((subj, identifier, subject_uri))
                             if sbj_class:
                                 g.add((subject_uri, RDF.type, sbj_class))
                             if g1:
                                 g += g1
-                            if gl1:
+                            if default_lang and gl1:
                                 g += gl1
-                            if gl2:
+                            if value_literal and gl2:
                                 g += gl2
-                    else:
-                        if identifier:
-                            g.add((subj, identifier, subject_uri))
-                        if sbj_class:
-                            g.add((subject_uri, RDF.type, sbj_class))
-                        if g1:
-                            g += g1
                 if date and obj_uri:
                     not_known_value = "undefined"
                     begin, end = extract_begin_end(obj, fill_missing=False)
