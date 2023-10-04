@@ -125,7 +125,7 @@
 </xsl:text>
   </xsl:template>
   <xsl:template name="create-root-E90-date">
-    <xsl:text>lt;https://sk.acdh.oeaw.ac.at/01/appellation-date/0&gt; a cidoc:E90_Symbolic_Object ;
+    <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/01/appellation-date/0&gt; a cidoc:E90_Symbolic_Object ;
   rdfs:label &quot;Appellation Part: 1899-1936&quot;@en ;
   cidoc:P106i_forms_part_of &lt;https://sk.acdh.oeaw.ac.at/01/appellation/0&gt; ;
   cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/appellation/date&gt; ;
