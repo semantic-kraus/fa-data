@@ -1,6 +1,5 @@
 from acdh_cidoc_pyutils.namespaces import CIDOC, FRBROO
 from rdflib import Graph, Namespace, URIRef, plugin, ConjunctiveGraph
-from rdflib.namespace import VOID, DCTERMS
 from rdflib.store import Store
 
 
