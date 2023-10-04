@@ -9,7 +9,6 @@ FA = Namespace("https://sk.acdh.oeaw.ac.at/project/fackel")
 
 store = plugin.get("Memory", Store)()
 project_store = plugin.get("Memory", Store)()
-
 project_uri = URIRef(f"{FA}")
 
 g = Graph(identifier=project_uri, store=project_store)
@@ -28,8 +27,6 @@ g_all.serialize("./html/texts.trig", format="trig")
 
 store = plugin.get("Memory", Store)()
 project_store = plugin.get("Memory", Store)()
-
-project_uri = URIRef(f"{FA}")
 
 g = Graph(identifier=project_uri, store=project_store)
 g.bind("cidoc", CIDOC)
