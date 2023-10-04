@@ -30,13 +30,13 @@ g_all.serialize("./html/texts.trig", format="trig")
 store = plugin.get("Memory", Store)()
 project_store = plugin.get("Memory", Store)()
 
-project_uri = URIRef(f"{DW}")
+project_uri = URIRef(f"{FA}")
 
 g = Graph(identifier=project_uri, store=project_store)
 g.bind("cidoc", CIDOC)
 g.bind("frbroo", FRBROO)
 g.bind("sk", SK)
-g.bind("dw", DW)
+g.bind("fa", FA)
 
 try:
     g.parse("./html/mentions.ttl")
