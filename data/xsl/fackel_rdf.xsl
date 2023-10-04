@@ -370,16 +370,28 @@
   <xsl:template name="create-issue-E90-issue-num">
     <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
+    
+    <xsl:variable name="iss-num">
+      <xsl:choose>
+        <xsl:when test="contains(@issue, '-')">
+          <xsl:value-of select="substring-before(@issue, '-')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="@issue"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    
     <xsl:text>/appellation-num/0&gt; a cidoc:E90_Symbolic_Object ;
   rdfs:label &quot;Appellation Part: </xsl:text>
-    <xsl:value-of select="number(@issue)"/>
+    <xsl:value-of select="number($iss-num)"/>
     <xsl:text>&quot;@en ;
   cidoc:P106i_forms_part_of &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
     <xsl:text>/appellation/0&gt; ;
   cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/appellation/num/issue&gt; ;
   rdf:value &quot;</xsl:text>
-    <xsl:value-of select="number(@issue)"/>
+    <xsl:value-of select="number($iss-num)"/>
     <xsl:text>&quot; .
     
 </xsl:text>
