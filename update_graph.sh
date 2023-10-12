@@ -20,4 +20,10 @@ curl -u $R_USER \
     $R_ENDPOINT \
     -H 'Content-Type: application/x-trig; charset=UTF-8' \
     -H 'Accept: text/boolean' \
-    -d @rdf/mentions.trig
+    -d @rdf/mentions1.trig
+
+curl -u $R_USER \
+    $R_ENDPOINT \
+    -H 'Content-Type: application/x-trig; charset=UTF-8' \
+    -H 'Accept: text/boolean' \
+    -d @rdf/mentions2.trig
