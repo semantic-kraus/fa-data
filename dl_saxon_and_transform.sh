@@ -12,6 +12,9 @@ java -jar saxon/saxon-he-12.1.jar -s:'data/indices/mentions1.xml' -xsl:'data/xsl
 echo "transform mentions 2"
 java -jar saxon/saxon-he-12.1.jar -s:'data/indices/mentions2.xml' -xsl:'data/xsl/fackel_mentions_rdf.xsl' -o:'rdf/mentions2.ttl'
 
+echo "transform mentions 3"
+java -jar saxon/saxon-he-12.1.jar -s:'data/indices/mentions3.xml' -xsl:'data/xsl/fackel_mentions_rdf.xsl' -o:'rdf/mentions3.ttl'
+
 echo "transform fackel rdf"
 java -jar saxon/saxon-he-12.1.jar -s:'data/indices/fackelTexts_cascaded.xml' -xsl:'data/xsl/fackel_rdf.xsl' -o:'rdf/texts.ttl'
 

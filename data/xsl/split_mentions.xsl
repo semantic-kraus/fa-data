@@ -13,7 +13,7 @@
         <xsl:result-document method="xml" href="../data/indices/mentions1.xml">
             <list>
             <xsl:for-each select="//mention">
-                <xsl:if test="position() &lt;= $count-mentions div 2">
+                <xsl:if test="position() &lt;= $count-mentions div 3">
                     <xsl:copy>
                         <xsl:apply-templates select="node()|@*" />
                     </xsl:copy>
@@ -24,7 +24,18 @@
         <xsl:result-document method="xml" href="../data/indices/mentions2.xml">
             <list>
             <xsl:for-each select="//mention">
-                <xsl:if test="position() &gt; $count-mentions div 2">
+                <xsl:if test="position() &gt; $count-mentions div 3 and position() &lt;= ($count-mentions div 3) * 2">
+                    <xsl:copy>
+                        <xsl:apply-templates select="node()|@*" />
+                    </xsl:copy>
+                </xsl:if>
+            </xsl:for-each>
+            </list>
+        </xsl:result-document>
+        <xsl:result-document method="xml" href="../data/indices/mentions3.xml">
+            <list>
+            <xsl:for-each select="//mention">
+                <xsl:if test="position() &gt; ($count-mentions div 3) * 2">
                     <xsl:copy>
                         <xsl:apply-templates select="node()|@*" />
                     </xsl:copy>
