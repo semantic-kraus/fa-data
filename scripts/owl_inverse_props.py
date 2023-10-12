@@ -34,8 +34,6 @@ FA = Namespace("https://sk.acdh.oeaw.ac.at/project/fackel")
 SK = Namespace(DOMAIN)
 
 project_uri = URIRef(f"{SK}project/fackel")
-store = plugin.get("Memory", Store)()
-project_store = plugin.get("Memory", Store)()
 
 
 def parse_xml(url):
@@ -127,6 +125,8 @@ for file in tqdm(rdf_files, total=len(rdf_files)):
     if len(all_inverse_triples) != 0:
         unique_triples = [dict(t) for t in {tuple(d.items()) for d in all_inverse_triples}]
         trig_path = file.replace(".ttl", ".trig")
+        store = plugin.get("Memory", Store)()
+        project_store = plugin.get("Memory", Store)()
         g = Graph(store=project_store, identifier=project_uri)
         g.bind("fa", FA)
         g.bind("dct", DCTERMS)
