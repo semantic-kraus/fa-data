@@ -470,7 +470,7 @@
     <xsl:value-of select="@id"/>
     <xsl:text>/appellation/0&gt; ;
   cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/appellation/place&gt; ;
-  rdf:value &quot;Wienl&quot; .
+  rdf:value &quot;Wien&quot; .
     
 </xsl:text>
   </xsl:template>
