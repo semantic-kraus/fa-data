@@ -138,9 +138,9 @@
     <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
     <xsl:text>&gt; a frbroo:F22_Self-Contained_Expression ;
-  rdfs:label &quot;Issue: Fackel </xsl:text>
-    <xsl:value-of select="@id"/>
-    <xsl:text>&quot;@en ;
+  rdfs:label &quot;Die Fackel Nr. </xsl:text>
+    <xsl:value-of select="number(@issue)"/>
+    <xsl:text> (Issue)&quot;@en ;
   cidoc:P102_has_title &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
     <xsl:text>/title/0&gt;</xsl:text>
@@ -171,9 +171,9 @@
     <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
     <xsl:text>/published-expression&gt; a frbroo:F24_Publication_Expression ;
-  rdfs:label &quot;Published Issue: Fackel </xsl:text>
-    <xsl:value-of select="@issue"/>
-    <xsl:text>&quot;@en ;
+  rdfs:label &quot;Die Fackel Nr. </xsl:text>
+    <xsl:value-of select="number(@issue)"/>
+    <xsl:text> (Published Issue)&quot;@en ;
   cidoc:P165_incorporates &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
     <xsl:text>&gt; ;
@@ -479,7 +479,7 @@
     <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
     <xsl:text>&gt; a frbroo:F22_Self-Contained_Expression ;
-  rdfs:label &quot;Expression: </xsl:text>
+  rdfs:label &quot;</xsl:text>
     <xsl:value-of select="@titleText"/>
     <xsl:text>&quot;@en ;
   cidoc:P102_has_title &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
