@@ -28,8 +28,9 @@ jobs:
     - name: create inverse triples
       run: |
         python scripts/owl_inverse_props.py
+    - name: Create Pages
+      run: |
+        ./create_pages.sh
     - name: Deploy
       run: |
         ./update_graph.sh
-
-
