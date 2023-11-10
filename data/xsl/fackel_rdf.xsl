@@ -96,7 +96,7 @@
   </xsl:template>
 
   <xsl:template name="create-root-F42-identifier">
-    <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/01/identifier/idno/0&gt; a cidoc:E42_identifier ;
+    <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/01/identifier/idno/0&gt; a cidoc:E42_Identifier ;
   rdfs:label &quot;Identifier: https://fackel.oeaw.ac.at/F/001,0u1&quot;@en ;
   cidoc:P1i_identifies &lt;https://sk.acdh.oeaw.ac.at/01/published-expression&gt; ;
   cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/idno/URL/fackel&gt; ;
