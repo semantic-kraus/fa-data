@@ -134,8 +134,9 @@ for file in tqdm(rdf_files, total=len(rdf_files)):
         g.bind("sk", SK)
         g.bind("cidoc", CIDOC)
         g.bind("frbroo", FRBROO)
-        g.parse(SK_MODEL_TRIG, format="trig")
-        g.parse(SK_GENERAL_TRIG, format="trig")
+        if "data.trig" in trig_path:
+            g.parse(SK_MODEL_TRIG, format="trig")
+            g.parse(SK_GENERAL_TRIG, format="trig")
         g.parse(trig_path, format="trig")
         for triple in unique_triples:
             s = URIRef(triple["sbj"])
