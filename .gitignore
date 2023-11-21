@@ -1,8 +1,6 @@
 # project
 saxon/
-data/indices/mentions1.xml
-data/indices/mentions2.xml
-data/indices/mentions3.xml
+data/indices/mentions*.xml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

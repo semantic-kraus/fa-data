@@ -22,25 +22,13 @@ curl -u $R_USER \
     -d @rdf/texts.trig
 sleep 600
 
-echo "namedgraphs mentions1.trig"
-curl -u $R_USER \
-    $R_ENDPOINT \
-    -H 'Content-Type: application/x-trig; charset=UTF-8' \
-    -H 'Accept: text/boolean' \
-    -d @rdf/mentions1.trig
-sleep 600
-
-echo "namedgraphs mentions2.trig"
-curl -u $R_USER \
-    $R_ENDPOINT \
-    -H 'Content-Type: application/x-trig; charset=UTF-8' \
-    -H 'Accept: text/boolean' \
-    -d @rdf/mentions2.trig
-sleep 600
-
-echo "namedgraphs mentions3.trig"
-curl -u $R_USER \
-    $R_ENDPOINT \
-    -H 'Content-Type: application/x-trig; charset=UTF-8' \
-    -H 'Accept: text/boolean' \
-    -d @rdf/mentions3.trig
+for i in {1..10}
+    do
+    echo "namedgraphs mentions${i}.trig"
+    curl -u $R_USER \
+        $R_ENDPOINT \
+        -H 'Content-Type: application/x-trig; charset=UTF-8' \
+        -H 'Accept: text/boolean' \
+        -d @rdf/mentions$i.trig
+    sleep 600
+    done
