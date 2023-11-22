@@ -6,7 +6,7 @@
         <xsl:variable name="split-amount" select="10"/>
         <xsl:variable name="count" select="count(//mention)"/>
         <xsl:variable name="mention" select="//mention" as="item()*"/>
-        <xsl:for-each select="//mention[position() &lt;= $split-amount]">
+        <xsl:for-each select="$mention[position() &lt;= $split-amount]">
             <xsl:call-template name="split">
                 <xsl:with-param name="seq" select="position()"/>
                 <xsl:with-param name="calc" select="$split-amount"/>
