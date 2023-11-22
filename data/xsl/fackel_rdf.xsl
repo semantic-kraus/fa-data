@@ -96,7 +96,7 @@
   </xsl:template>
 
   <xsl:template name="create-root-F42-identifier">
-    <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/01/identifier/idno/0&gt; a cidoc:E42_Identifier ;
+    <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/01/identifier/idno/0&gt; a cidoc:E42_identifier ;
   rdfs:label &quot;Identifier: https://fackel.oeaw.ac.at/F/001,0u1&quot;@en ;
   cidoc:P1i_identifies &lt;https://sk.acdh.oeaw.ac.at/01/published-expression&gt; ;
   cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/idno/URL/fackel&gt; ;
@@ -135,11 +135,23 @@
   </xsl:template>
 
   <xsl:template name="create-issue-F22">
+    
+    <xsl:variable name="issue-no">
+      <xsl:choose>
+        <xsl:when test="contains(@issue, '-')">
+          <xsl:value-of select="@issue"/>
+        </xsl:when>
+        <xsl:otherwise>          
+          <xsl:value-of select="number(@issue)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>    
+    
     <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
     <xsl:text>&gt; a frbroo:F22_Self-Contained_Expression ;
   rdfs:label &quot;Die Fackel Nr. </xsl:text>
-    <xsl:value-of select="number(@issue)"/>
+    <xsl:value-of select="$issue-no"/>
     <xsl:text> (Issue)&quot;@en ;
   cidoc:P102_has_title &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
@@ -167,12 +179,26 @@
     
 </xsl:text>
   </xsl:template>
+  
+  
   <xsl:template name="create-publissue-F24">
+    
+    <xsl:variable name="issue-no">
+      <xsl:choose>
+        <xsl:when test="contains(@issue, '-')">
+          <xsl:value-of select="@issue"/>
+        </xsl:when>
+        <xsl:otherwise>          
+          <xsl:value-of select="number(@issue)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>    
+    
     <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
     <xsl:text>/published-expression&gt; a frbroo:F24_Publication_Expression ;
   rdfs:label &quot;Die Fackel Nr. </xsl:text>
-    <xsl:value-of select="number(@issue)"/>
+    <xsl:value-of select="$issue-no"/>
     <xsl:text> (Published Issue)&quot;@en ;
   cidoc:P165_incorporates &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
     <xsl:value-of select="@id"/>
@@ -599,12 +625,12 @@
     <xsl:choose>
       <xsl:when test="@titleSource='titleQuart' or @titleSource='quart' or @titleSource='samek' or @titleSource='titleUllmann' or @titleSource='p' or @titleSource='ullmann' or @titleSource='titleSamek' or @titleSource='fromContItem' or @titleSource='contPage' or @titleSource='sideQuart' or @titleSource='fromContItemuart'">
         <xsl:text> ;
-  cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/title/prov&gt; ;
+  cidoc:P2_has_Type &lt;https://sk.acdh.oeaw.ac.at/types/title/prov&gt; ;
   prov:wasDerivedFrom &lt;https://sk.acdh.oeaw.ac.at/project/fackel-online&gt;</xsl:text>
       </xsl:when>
       <xsl:when test="@titleSource='pSemKraus' or  @titleSource='semKraus'">
         <xsl:text> ;
-  cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/title/prov&gt; ;
+  cidoc:P2_has_Type &lt;https://sk.acdh.oeaw.ac.at/types/title/prov&gt; ;
   prov:wasDerivedFrom &lt;https://sk.acdh.oeaw.ac.at/project/semantic-kraus&gt;</xsl:text>
       </xsl:when>
     </xsl:choose>
