@@ -134,15 +134,15 @@ for file in tqdm(rdf_files, total=len(rdf_files)):
         g.bind("sk", SK)
         g.bind("cidoc", CIDOC)
         g.bind("frbroo", FRBROO)
-        if "data.trig" in trig_path:
-            g.parse(SK_MODEL_TRIG, format="trig")
-            g.parse(SK_GENERAL_TRIG, format="trig")
         g.parse(trig_path, format="trig")
         for triple in unique_triples:
             s = URIRef(triple["sbj"])
             p = URIRef(triple["pred"])
             o = URIRef(triple["obj"])
             g.add((s, p, o))
+        if "data.trig" in trig_path:
+            g.parse(SK_MODEL_TRIG, format="trig")
+            g.parse(SK_GENERAL_TRIG, format="trig")
         print("saved file: ", trig_path)
         # save_dict(unique_triples, f"{file.replace('.ttl', '')}.json")
         g_all = ConjunctiveGraph(store=project_store)

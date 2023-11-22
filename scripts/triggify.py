@@ -1,6 +1,7 @@
 from acdh_cidoc_pyutils.namespaces import CIDOC, FRBROO
 from rdflib import Graph, Namespace, URIRef, plugin, ConjunctiveGraph
 from rdflib.store import Store
+import glob
 
 
 domain = "https://sk.acdh.oeaw.ac.at/"
@@ -25,53 +26,21 @@ except Exception as e:
 g_all = ConjunctiveGraph(store=project_store)
 g_all.serialize("./rdf/texts.trig", format="trig")
 
-store = plugin.get("Memory", Store)()
-project_store = plugin.get("Memory", Store)()
+mentions = glob.glob("./rdf/mentions*.ttl")
 
-g = Graph(identifier=project_uri, store=project_store)
-g.bind("cidoc", CIDOC)
-g.bind("frbroo", FRBROO)
-g.bind("sk", SK)
-g.bind("fa", FA)
+for x in mentions:
+    store = plugin.get("Memory", Store)()
+    project_store = plugin.get("Memory", Store)()
 
-try:
-    g.parse("./rdf/mentions1.ttl")
-except Exception as e:
-    print(e)
-
-g_all = ConjunctiveGraph(store=project_store)
-g_all.serialize("./rdf/mentions1.trig", format="trig")
-
-store = plugin.get("Memory", Store)()
-project_store = plugin.get("Memory", Store)()
-
-g = Graph(identifier=project_uri, store=project_store)
-g.bind("cidoc", CIDOC)
-g.bind("frbroo", FRBROO)
-g.bind("sk", SK)
-g.bind("fa", FA)
-
-try:
-    g.parse("./rdf/mentions2.ttl")
-except Exception as e:
-    print(e)
-
-g_all = ConjunctiveGraph(store=project_store)
-g_all.serialize("./rdf/mentions2.trig", format="trig")
-
-store = plugin.get("Memory", Store)()
-project_store = plugin.get("Memory", Store)()
-
-g = Graph(identifier=project_uri, store=project_store)
-g.bind("cidoc", CIDOC)
-g.bind("frbroo", FRBROO)
-g.bind("sk", SK)
-g.bind("fa", FA)
-
-try:
-    g.parse("./rdf/mentions3.ttl")
-except Exception as e:
-    print(e)
-
-g_all = ConjunctiveGraph(store=project_store)
-g_all.serialize("./rdf/mentions3.trig", format="trig")
+    g = Graph(identifier=project_uri, store=project_store)
+    g.bind("cidoc", CIDOC)
+    g.bind("frbroo", FRBROO)
+    g.bind("sk", SK)
+    g.bind("fa", FA)
+    try:
+        g.parse(x)
+    except Exception as e:
+        print(e)
+    filepath = x.replace(".ttl", ".trig")
+    g_all = ConjunctiveGraph(store=project_store)
+    g_all.serialize(filepath, format="trig")
