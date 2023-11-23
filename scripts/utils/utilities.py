@@ -359,10 +359,16 @@ def create_e42_or_custom_class(
                 else:
                     g.add((identifier_uri, RDF.type, CIDOC["E42_Identifier"]))
                 if attribute:
+                    try:
+                        attr = ident.attrib[attribute].lower()
+                    except KeyError:
+                        attr = False
+                        break
                     g.add((identifier_uri, CIDOC["P2_has_type"],
-                           URIRef(f"{uri_prefix}{type_suffix}/{ident.attrib[attribute]}")))
+                           URIRef(f"{uri_prefix}{type_suffix}/{attr}")))
                 else:
                     g.add((identifier_uri, CIDOC["P2_has_type"], URIRef(f"{uri_prefix}{type_suffix}")))
+                label_prefix_value = ""
                 gl, literal = create_object_literal_graph(
                     node=ident,
                     subject_uri=identifier_uri,
@@ -374,7 +380,7 @@ def create_e42_or_custom_class(
                 gl, literal = create_object_literal_graph(
                     node=ident,
                     subject_uri=identifier_uri,
-                    l_prefix="",
+                    l_prefix=label_prefix_value,
                     default_lang=default_lang,
                     predicate=RDF.value
                 )

@@ -2,6 +2,9 @@
 echo "downloading saxon"
 wget https://github.com/Saxonica/Saxon-HE/raw/main/12/Java/SaxonHE12-1J.zip && unzip SaxonHE12-1J.zip -d saxon && rm -rf SaxonHE12-1J.zip
 
+echo "fixtures in listperson.xml"
+java -jar saxon/saxon-he-12.1.jar -s:'data/indices/listperson.xml' -xsl:'data/xsl/fixtures.xsl' -o:'data/indices/listperson.xml'
+
 echo "split mentions"
 java -jar saxon/saxon-he-12.1.jar -s:'data/indices/mentions.xml' -xsl:'data/xsl/split_mentions.xsl' -o:'rdf/to_remove.xml'
 rm -rf rdf/to_remove.xml

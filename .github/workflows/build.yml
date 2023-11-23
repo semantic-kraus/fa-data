@@ -20,13 +20,13 @@ jobs:
         submodules: true
     - name: pip
       run: pip install -r requirements.txt
-    - name: build
-      run: ./build.sh
     - name: xslt
       run: ./dl_saxon_and_transform.sh
     - name: triggify 
       run: |
         python scripts/triggify.py
+    - name: build
+      run: ./build.sh
     - name: create inverse triples
       run: |
         python scripts/owl_inverse_props.py
