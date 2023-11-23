@@ -8,7 +8,6 @@ from utils.utilities import (
     create_triple_from_node,
     create_birth_death_settlement_graph,
     create_e42_or_custom_class
-    
 )
 from acdh_cidoc_pyutils.namespaces import CIDOC, FRBROO
 from acdh_tei_pyutils.tei import TeiReader
