@@ -27,8 +27,6 @@ NSMAP_RDF = {
     "dcterms": "http://purl.org/dc/terms/"
 }
 SK_MODEL_URL = "https://raw.githubusercontent.com/semantic-kraus/sk_general/main/sk_model.owl"
-SK_MODEL_TRIG = "https://raw.githubusercontent.com/semantic-kraus/sk_general/main/sk_model.trig"
-SK_GENERAL_TRIG = "https://raw.githubusercontent.com/semantic-kraus/sk_general/main/general.trig"
 DOMAIN = "https://sk.acdh.oeaw.ac.at/"
 FA = Namespace("https://sk.acdh.oeaw.ac.at/project/fackel")
 SK = Namespace(DOMAIN)
@@ -140,9 +138,6 @@ for file in tqdm(rdf_files, total=len(rdf_files)):
             p = URIRef(triple["pred"])
             o = URIRef(triple["obj"])
             g.add((s, p, o))
-        if "data.trig" in trig_path:
-            g.parse(SK_MODEL_TRIG, format="trig")
-            g.parse(SK_GENERAL_TRIG, format="trig")
         print("saved file: ", trig_path)
         # save_dict(unique_triples, f"{file.replace('.ttl', '')}.json")
         g_all = ConjunctiveGraph(store=project_store)
