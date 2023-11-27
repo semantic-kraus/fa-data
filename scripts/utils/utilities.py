@@ -365,14 +365,16 @@ def create_e42_or_custom_class(
                     except KeyError:
                         attr = False
                         break
+                    p2_type = URIRef(f"{uri_prefix}{type_suffix}/{attr}")
                     g.add((identifier_uri, CIDOC["P2_has_type"],
                            URIRef(f"{uri_prefix}{type_suffix}/{attr}")))
                     if obj_class:
-                        g.add((URIRef(f"{uri_prefix}{type_suffix}/{attr}"), RDF.type, obj_class))
+                        g.add((p2_type, RDF.type, obj_class))
                 else:
-                    g.add((identifier_uri, CIDOC["P2_has_type"], URIRef(f"{uri_prefix}{type_suffix}")))
+                    p2_type = URIRef(f"{uri_prefix}{type_suffix}")
+                    g.add((identifier_uri, CIDOC["P2_has_type"], p2_type))
                     if obj_class:
-                        g.add((URIRef(f"{uri_prefix}{type_suffix}"), RDF.type, obj_class))
+                        g.add((p2_type, RDF.type, obj_class))
                 label_prefix_value = ""
                 gl, literal = create_object_literal_graph(
                     node=ident,
