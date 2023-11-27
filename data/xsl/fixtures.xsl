@@ -30,5 +30,11 @@
       <xsl:value-of select="concat('https://viaf.org/viaf/', .)"/>
     </xsl:copy>
   </xsl:template>
+  <xsl:template match="//tei:idno[@type='URI']">
+    <xsl:copy>
+      <xsl:attribute name="type">FACKEL</xsl:attribute>
+      <xsl:value-of select="."/>
+    </xsl:copy>
+  </xsl:template>
 
 </xsl:stylesheet>
