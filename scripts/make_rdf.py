@@ -92,7 +92,8 @@ for x in tqdm(items, total=len(items)):
         xpath=".//tei:idno",
         attribute="type",
         label_prefix=label_prefix,
-        type_suffix="idno/URL"
+        type_suffix="idno/URL",
+        obj_class=CIDOC["E55_Type"],
     )
     g += create_e42_or_custom_class(
         subj,
@@ -102,7 +103,8 @@ for x in tqdm(items, total=len(items)):
         xpath=".//tei:idno",
         attribute="subtype",
         label_prefix=label_prefix,
-        type_suffix="idno/URL"
+        type_suffix="idno/URL",
+        obj_class=CIDOC["E55_Type"],
     )
     # g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
     # create appellations
@@ -274,7 +276,8 @@ for x in tqdm(items, total=len(items)):
         xpath=".//tei:idno",
         attribute="subtype",
         label_prefix=label_prefix,
-        type_suffix="idno/URL"
+        type_suffix="idno/URL",
+        obj_class=CIDOC["E55_Type"],
     )
     # g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
     # create appellations
