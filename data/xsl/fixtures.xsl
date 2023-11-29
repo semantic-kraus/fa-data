@@ -15,19 +15,40 @@
   <xsl:template match="//tei:idno[@type='WikiData']">
     <xsl:copy>
       <xsl:attribute name="type">WikiData</xsl:attribute>
-      <xsl:value-of select="concat('https://www.wikidata.org/wiki/', .)"/>
+      <xsl:choose>
+        <xsl:when test="starts-with(., 'http')">
+          <xsl:value-of select="."/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('https://www.wikidata.org/wiki/', .)"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:copy>
   </xsl:template>
   <xsl:template match="//tei:idno[@type='GND']">
     <xsl:copy>
       <xsl:attribute name="type">GND</xsl:attribute>
-      <xsl:value-of select="concat('https://d-nb.info/gnd/', .)"/>
+      <xsl:choose>
+        <xsl:when test="starts-with(., 'http')">
+          <xsl:value-of select="."/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('https://d-nb.info/gnd/', .)"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:copy>
   </xsl:template>
   <xsl:template match="//tei:idno[@type='VIAF']">
     <xsl:copy>
       <xsl:attribute name="type">VIAF</xsl:attribute>
-      <xsl:value-of select="concat('https://viaf.org/viaf/', .)"/>
+      <xsl:choose>
+        <xsl:when test="starts-with(., 'http')">
+          <xsl:value-of select="."/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('https://viaf.org/viaf/', .)"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:copy>
   </xsl:template>
   <xsl:template match="//tei:idno[@type='URI']">
