@@ -15,27 +15,23 @@
         <xsl:for-each select="mention[position() &lt; 10000]">
         -->
         <xsl:for-each select="mention">
-            <xsl:variable name="text-id" select="text_id/text()"/>
-            <xsl:variable name="text-pos"
-                select="count(preceding-sibling::mention[text_id/text() = $text-id]) + 1"/>
-
             <xsl:call-template name="create-INT1-textpassage">
-                <xsl:with-param name="n" select="$text-pos"/>
+                <xsl:with-param name="n" select="@n"/>
             </xsl:call-template>
             <xsl:call-template name="create-E42-id-identifier">
-                <xsl:with-param name="n" select="$text-pos"/>
+                <xsl:with-param name="n" select="@n"/>
             </xsl:call-template>
             <xsl:call-template name="create-E42-permalink-identifier">
-                <xsl:with-param name="n" select="$text-pos"/>
+                <xsl:with-param name="n" select="@n"/>
             </xsl:call-template>
             <xsl:call-template name="create-INT16-segment">
-                <xsl:with-param name="n" select="$text-pos"/>
+                <xsl:with-param name="n" select="@n"/>
             </xsl:call-template>
             <xsl:call-template name="create-INT2-actualized-feature">
-                <xsl:with-param name="n" select="$text-pos"/>
+                <xsl:with-param name="n" select="@n"/>
             </xsl:call-template>
             <xsl:call-template name="create-INT18-reference">
-                <xsl:with-param name="n" select="$text-pos"/>
+                <xsl:with-param name="n" select="@n"/>
             </xsl:call-template>
             <!-- 
             -->
