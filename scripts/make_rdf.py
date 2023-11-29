@@ -297,7 +297,7 @@ for x in tqdm(items, total=len(items)):
         identifier=CIDOC["P1_is_identified_by"]
     )
 
-print("writing graph to file: data.trig and .ttl")
+print("writing graph to file: data.ttl")
 g_all = ConjunctiveGraph(store=project_store)
 # g_all.serialize(f"{rdf_dir}/data.trig", format="trig")
 g_all.serialize(f"{rdf_dir}/data.ttl", format="ttl")
