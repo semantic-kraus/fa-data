@@ -4,8 +4,8 @@
 
     <xsl:template match="/">
         <xsl:variable name="split-amount" select="10"/>
-        <xsl:variable name="count" select="count(//mention)"/>
         <xsl:variable name="mention" select="//mention" as="item()*"/>
+        <xsl:variable name="count" select="count($mention)"/>
         <xsl:for-each select="$mention[position() &lt;= $split-amount]">
             <xsl:call-template name="split">
                 <xsl:with-param name="seq" select="position()"/>
@@ -23,8 +23,11 @@
         <xsl:result-document method="xml" href="../data/indices/mentions{$seq}.xml">
             <list>
             <xsl:for-each select="$mention">
+                <xsl:variable name="text-id" select="./text_id/text()"/>
+                <xsl:variable name="text-pos" select="count(preceding-sibling::mention[text_id/text() = $text-id]) + 1"/>
                 <xsl:if test="position() &lt;= ($count-mentions div $calc) * $seq and position() &gt; ($count-mentions div $calc) * ($seq - 1)">
                     <xsl:copy>
+                        <xsl:attribute name="n" select="$text-pos"/>
                         <xsl:apply-templates select="node()|@*" />
                     </xsl:copy>
                 </xsl:if>

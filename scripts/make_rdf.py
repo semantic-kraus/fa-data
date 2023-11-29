@@ -5,9 +5,9 @@ from acdh_cidoc_pyutils import (
     make_entity_label
 )
 from utils.utilities import (
-    make_e42_identifiers_utils,
     create_triple_from_node,
-    create_birth_death_settlement_graph
+    create_birth_death_settlement_graph,
+    create_e42_or_custom_class
 )
 from acdh_cidoc_pyutils.namespaces import CIDOC, FRBROO
 from acdh_tei_pyutils.tei import TeiReader
@@ -47,6 +47,10 @@ if LIMIT:
     items = items[:LIMIT]
 
 
+def normalize_string(string: str) -> str:
+    return " ".join(" ".join(string.split()).split())
+
+
 print(f"converting {entity_type}s derived from {index_file}")
 for x in tqdm(items, total=len(items)):
     xml_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
@@ -63,8 +67,44 @@ for x in tqdm(items, total=len(items)):
     else:
         g.add((subj, RDF.type, CIDOC["E21_Person"]))
     g.add((subj, RDFS.label, Literal(item_label, lang="und")))
-    g += make_e42_identifiers_utils(
-        subj, x, type_domain=f"{SK}types", default_lang="en", same_as=False
+    type_domain = f"{SK}types/"
+    app_uri = URIRef(f"{subj}/identifier/{xml_id}")
+    type_uri = URIRef(f"{type_domain}idno/xml-id")
+    approx_uri = URIRef(f"{type_domain}date/approx")
+    xml_id = x.attrib["{http://www.w3.org/XML/1998/namespace}id"]
+    label_prefix = "Identifier: "
+    label_value = normalize_string(f"{label_prefix}{xml_id}")
+    lang = "en"
+    g.add((approx_uri, RDF.type, CIDOC["E55_Type"]))
+    g.add((approx_uri, RDFS.label, Literal("approx")))
+    g.add((type_uri, RDF.type, CIDOC["E55_Type"]))
+    g.add((subj, CIDOC["P1_is_identified_by"], app_uri))
+    g.add((app_uri, RDF.type, CIDOC["E42_Identifier"]))
+    g.add((app_uri, RDFS.label, Literal(label_value, lang=lang)))
+    g.add((app_uri, RDF.value, Literal(normalize_string(xml_id))))
+    g.add((app_uri, CIDOC["P2_has_type"], type_uri))
+    g.add((subj, RDF.type, CIDOC["E21_Person"]))
+    g += create_e42_or_custom_class(
+        subj,
+        x,
+        default_lang="en",
+        uri_prefix=type_domain,
+        xpath=".//tei:idno",
+        attribute="type",
+        label_prefix=label_prefix,
+        type_suffix="idno/URL",
+        obj_class=CIDOC["E55_Type"],
+    )
+    g += create_e42_or_custom_class(
+        subj,
+        x,
+        default_lang="en",
+        uri_prefix=type_domain,
+        xpath=".//tei:idno",
+        attribute="subtype",
+        label_prefix=label_prefix,
+        type_suffix="idno/URL",
+        obj_class=CIDOC["E55_Type"],
     )
     # g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
     # create appellations
@@ -226,7 +266,19 @@ for x in tqdm(items, total=len(items)):
     item_label = make_entity_label(name_node[0])[0]
     g.add((subj, RDF.type, CIDOC["E53_Place"]))
     g.add((subj, RDFS.label, Literal(item_label, lang="und")))
-    g += make_e42_identifiers_utils(subj, x, type_domain=f"{SK}types", default_lang="en", same_as=False)
+    type_domain = f"{SK}types/"
+    label_prefix = "Identifier: "
+    g += create_e42_or_custom_class(
+        subj,
+        x,
+        default_lang="en",
+        uri_prefix=type_domain,
+        xpath=".//tei:idno",
+        attribute="subtype",
+        label_prefix=label_prefix,
+        type_suffix="idno/URL",
+        obj_class=CIDOC["E55_Type"],
+    )
     # g += make_appellations(subj, x, type_domain=f"{SK}types", default_lang="und")
     # create appellations
     g += create_triple_from_node(
@@ -247,5 +299,5 @@ for x in tqdm(items, total=len(items)):
 
 print("writing graph to file: data.trig and .ttl")
 g_all = ConjunctiveGraph(store=project_store)
-g_all.serialize(f"{rdf_dir}/data.trig", format="trig")
+# g_all.serialize(f"{rdf_dir}/data.trig", format="trig")
 g_all.serialize(f"{rdf_dir}/data.ttl", format="ttl")

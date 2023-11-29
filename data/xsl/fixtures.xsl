@@ -1,0 +1,61 @@
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:tei="http://www.tei-c.org/ns/1.0"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+  <xsl:output method="xml" encoding="UTF-8" media-type="text/xml" indent="yes"/>
+  <xsl:strip-space elements="*"/>
+
+  <xsl:template match="node()|@*">
+    <xsl:copy>
+      <xsl:apply-templates select="node()|@*"/>
+    </xsl:copy>
+  </xsl:template>
+  <xsl:template match="/">
+    <xsl:apply-templates select="node()|@*"/>
+  </xsl:template>
+  <xsl:template match="//tei:idno[@type='WikiData']">
+    <xsl:copy>
+      <xsl:attribute name="type">WikiData</xsl:attribute>
+      <xsl:choose>
+        <xsl:when test="starts-with(., 'http')">
+          <xsl:value-of select="."/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('https://www.wikidata.org/wiki/', .)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:copy>
+  </xsl:template>
+  <xsl:template match="//tei:idno[@type='GND']">
+    <xsl:copy>
+      <xsl:attribute name="type">GND</xsl:attribute>
+      <xsl:choose>
+        <xsl:when test="starts-with(., 'http')">
+          <xsl:value-of select="."/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('https://d-nb.info/gnd/', .)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:copy>
+  </xsl:template>
+  <xsl:template match="//tei:idno[@type='VIAF']">
+    <xsl:copy>
+      <xsl:attribute name="type">VIAF</xsl:attribute>
+      <xsl:choose>
+        <xsl:when test="starts-with(., 'http')">
+          <xsl:value-of select="."/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('https://viaf.org/viaf/', .)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:copy>
+  </xsl:template>
+  <xsl:template match="//tei:idno[@type='URI']">
+    <xsl:copy>
+      <xsl:attribute name="type">FACKEL</xsl:attribute>
+      <xsl:value-of select="."/>
+    </xsl:copy>
+  </xsl:template>
+
+</xsl:stylesheet>

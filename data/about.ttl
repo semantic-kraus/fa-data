@@ -3,5 +3,6 @@
 @prefix sk: <https://sk.acdh.oeaw.ac.at/> .
 
 
-fa: dct:title "Die Fackel online"@de ;
+fa: a <http://www.w3.org/ns/sparql-service-description#NamedGraph> ;
+    dct:title "Die Fackel online"@de ;
     dct:bibliographicCitation """AAC - Austrian Academy Corpus: AAC-FACKEL. Online Version: »Die Fackel. Herausgeber: Karl Kraus, Wien 1899-1936« AAC Digital Edition No 1"""  .

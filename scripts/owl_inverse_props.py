@@ -27,8 +27,6 @@ NSMAP_RDF = {
     "dcterms": "http://purl.org/dc/terms/"
 }
 SK_MODEL_URL = "https://raw.githubusercontent.com/semantic-kraus/sk_general/main/sk_model.owl"
-SK_MODEL_TRIG = "https://raw.githubusercontent.com/semantic-kraus/sk_general/main/sk_model.trig"
-SK_GENERAL_TRIG = "https://raw.githubusercontent.com/semantic-kraus/sk_general/main/general.trig"
 DOMAIN = "https://sk.acdh.oeaw.ac.at/"
 FA = Namespace("https://sk.acdh.oeaw.ac.at/project/fackel")
 SK = Namespace(DOMAIN)
@@ -113,38 +111,34 @@ rdf_files = sorted(glob.glob("./rdf/*.ttl"))
 lookup_dict = get_inverse_of(parse_xml(SK_MODEL_URL))
 
 for file in tqdm(rdf_files, total=len(rdf_files)):
-    ttl = parse_rdf_ttl(file)
+    store = plugin.get("Memory", Store)()
+    project_store = plugin.get("Memory", Store)()
+    g = Graph(store=project_store, identifier=project_uri)
+    g += parse_rdf_ttl(file)
     all_inverse_triples = []
     for x in tqdm(lookup_dict, total=len(lookup_dict)):
         inverse_of = x[0]
         inverse = x[1]
-        qres = query_for_inverse(ttl, inverse_of)
+        qres = query_for_inverse(g, inverse_of)
         dict_result = create_inverse_dict(qres)
         if dict_result is not None:
             create_triples(dict_result, all_inverse_triples, inverse)
     if len(all_inverse_triples) != 0:
         unique_triples = [dict(t) for t in {tuple(d.items()) for d in all_inverse_triples}]
-        trig_path = file.replace(".ttl", ".trig")
-        store = plugin.get("Memory", Store)()
-        project_store = plugin.get("Memory", Store)()
-        g = Graph(store=project_store, identifier=project_uri)
         g.bind("fa", FA)
         g.bind("dct", DCTERMS)
         g.bind("void", VOID)
         g.bind("sk", SK)
         g.bind("cidoc", CIDOC)
         g.bind("frbroo", FRBROO)
-        g.parse(trig_path, format="trig")
         for triple in unique_triples:
             s = URIRef(triple["sbj"])
             p = URIRef(triple["pred"])
             o = URIRef(triple["obj"])
             g.add((s, p, o))
-        if "data.trig" in trig_path:
-            g.parse(SK_MODEL_TRIG, format="trig")
-            g.parse(SK_GENERAL_TRIG, format="trig")
+        trig_path = file.replace(".ttl", ".trig")
         print("saved file: ", trig_path)
-        # save_dict(unique_triples, f"{file.replace('.ttl', '')}.json")
         g_all = ConjunctiveGraph(store=project_store)
         g_all.serialize(trig_path, format="trig")
+        g_all.serialize(file, format="ttl")
         print("done")

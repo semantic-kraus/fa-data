@@ -12,7 +12,7 @@ jobs:
     env:
       NO_LIMIT: nolimit
       R_USER: ${{secrets.R_USER}}
-      R_ENDPOINT: ${{secrets.R_ENDPOINT}}
+      R_ENDPOINT_V: ${{secrets.R_ENDPOINT_V}}
     steps:
     - name: Perform Checkout
       uses: actions/checkout@v3
@@ -20,13 +20,10 @@ jobs:
         submodules: true
     - name: pip
       run: pip install -r requirements.txt
-    - name: build
-      run: ./build.sh
     - name: xslt
       run: ./dl_saxon_and_transform.sh
-    - name: triggify 
-      run: |
-        python scripts/triggify.py
+    - name: build
+      run: ./build.sh
     - name: create inverse triples
       run: |
         python scripts/owl_inverse_props.py

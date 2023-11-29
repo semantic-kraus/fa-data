@@ -336,7 +336,8 @@ def create_e42_or_custom_class(
     value_datatype: Namespace | bool = False,
     type_suffix: str | bool = "types/any",
     custom_identifier: Namespace | bool = False,
-    custom_identifier_class: Namespace | bool = False
+    custom_identifier_class: Namespace | bool = False,
+    obj_class: Namespace | bool = False,
 ) -> Graph | tuple[Graph, URIRef]:
     g = Graph()
     if xpath:
@@ -359,10 +360,22 @@ def create_e42_or_custom_class(
                 else:
                     g.add((identifier_uri, RDF.type, CIDOC["E42_Identifier"]))
                 if attribute:
+                    try:
+                        attr = ident.attrib[attribute].lower()
+                    except KeyError:
+                        attr = False
+                        break
+                    p2_type = URIRef(f"{uri_prefix}{type_suffix}/{attr}")
                     g.add((identifier_uri, CIDOC["P2_has_type"],
-                           URIRef(f"{uri_prefix}{type_suffix}/{ident.attrib[attribute]}")))
+                           URIRef(f"{uri_prefix}{type_suffix}/{attr}")))
+                    if obj_class:
+                        g.add((p2_type, RDF.type, obj_class))
                 else:
-                    g.add((identifier_uri, CIDOC["P2_has_type"], URIRef(f"{uri_prefix}{type_suffix}")))
+                    p2_type = URIRef(f"{uri_prefix}{type_suffix}")
+                    g.add((identifier_uri, CIDOC["P2_has_type"], p2_type))
+                    if obj_class:
+                        g.add((p2_type, RDF.type, obj_class))
+                label_prefix_value = ""
                 gl, literal = create_object_literal_graph(
                     node=ident,
                     subject_uri=identifier_uri,
@@ -374,7 +387,7 @@ def create_e42_or_custom_class(
                 gl, literal = create_object_literal_graph(
                     node=ident,
                     subject_uri=identifier_uri,
-                    l_prefix="",
+                    l_prefix=label_prefix_value,
                     default_lang=default_lang,
                     predicate=RDF.value
                 )
