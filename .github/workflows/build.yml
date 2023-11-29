@@ -22,9 +22,6 @@ jobs:
       run: pip install -r requirements.txt
     - name: xslt
       run: ./dl_saxon_and_transform.sh
-    - name: triggify 
-      run: |
-        python scripts/triggify.py
     - name: build
       run: ./build.sh
     - name: create inverse triples

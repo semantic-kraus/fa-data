@@ -16,9 +16,9 @@
         -->
         <xsl:for-each select="mention">
             <xsl:variable name="text-id" select="text_id/text()"/>
-            <xsl:variable name="text-pos"
-                select="count(preceding-sibling::mention[text_id/text() = $text-id]) + 1"/>
-
+            <!-- <xsl:variable name="text-pos"
+                select="count(preceding-sibling::mention[text_id/text() = $text-id]) + 1"/> -->
+            <xsl:variable name="text-pos" select="@n"/>
             <xsl:call-template name="create-INT1-textpassage">
                 <xsl:with-param name="n" select="$text-pos"/>
             </xsl:call-template>
