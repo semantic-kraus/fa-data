@@ -5,26 +5,26 @@ curl -D- -X DELETE \
     "${R_ENDPOINT_V}?c=<https://sk.acdh.oeaw.ac.at/project/fackel>"
 sleep 300
 
-echo "upload namedgraphs data.trig"
-curl $R_ENDPOINT_V \
-    -H 'Content-Type: application/x-trig; charset=UTF-8' \
+echo "upload namedgraphs data.ttl"
+curl "${R_ENDPOINT_V}?context-uri=https://sk.acdh.oeaw.ac.at/project/fackel" \
+    -H 'Content-Type: application/x-turtle; charset=UTF-8' \
     -H 'Accept: text/boolean' \
-    -d @rdf/data.trig
+    -d @rdf/data.ttl
 sleep 300
 
-echo "namedgraphs texts.trig"
-curl $R_ENDPOINT_V \
-    -H 'Content-Type: application/x-trig; charset=UTF-8' \
+echo "namedgraphs texts.ttl"
+curl "${R_ENDPOINT_V}?context-uri=https://sk.acdh.oeaw.ac.at/project/fackel" \
+    -H 'Content-Type: application/x-turtle; charset=UTF-8' \
     -H 'Accept: text/boolean' \
-    -d @rdf/texts.trig
+    -d @rdf/texts.ttl
 sleep 300
 
 for i in {1..10}
     do
-    echo "namedgraphs mentions${i}.trig"
-    curl $R_ENDPOINT_V \
-        -H 'Content-Type: application/x-trig; charset=UTF-8' \
+    echo "namedgraphs mentions${i}.ttl"
+    curl "${R_ENDPOINT_V}?context-uri=https://sk.acdh.oeaw.ac.at/project/fackel" \
+        -H 'Content-Type: application/x-turtle; charset=UTF-8' \
         -H 'Accept: text/boolean' \
-        -d @rdf/mentions$i.trig
+        -d @rdf/mentions$i.ttl
     sleep 300
     done

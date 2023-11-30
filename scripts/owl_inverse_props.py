@@ -107,7 +107,7 @@ def create_triples(dict_result, output, inverse):
             )
 
 
-rdf_files = sorted(glob.glob("./rdf/*.ttl"))
+rdf_files = sorted(glob.glob("./rdf/texts.ttl"))
 lookup_dict = get_inverse_of(parse_xml(SK_MODEL_URL))
 
 for file in tqdm(rdf_files, total=len(rdf_files)):
