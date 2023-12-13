@@ -71,7 +71,7 @@
 
   <xsl:template name="create-root-F24">
     <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/01/published-expression&gt; a frbroo:F24_Publication_Expression ;
-  rdfs:label &quot;Die Fackel (Published Periodical)&quot;@en ;
+  rdfs:label &quot;Published Periodical: Die Fackel;&quot;@en ;
   cidoc:P1_is_identified_by &lt;https://sk.acdh.oeaw.ac.at/01/identifier/idno/0&gt; ;
   cidoc:P1_is_identified_by &lt;https://sk.acdh.oeaw.ac.at/01/appellation/0&gt; ;
   frbroo:R5_has_component </xsl:text>
@@ -434,10 +434,7 @@
     <xsl:value-of select="@id"/>
     <xsl:text>/appellation/0&gt; ;
   cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/appellation/num/volume&gt; ;
-  rdf:value &quot;</xsl:text>
-    <xsl:value-of select="parent::year/@yearTitle"/>
-    <xsl:text>&quot; ;
-  rdf:value &quot;</xsl:text>
+  rdf:value &quot;Vol. </xsl:text>
     <xsl:value-of select="parent::year/@num"/>
     <xsl:text>&quot; .
     
@@ -465,9 +462,6 @@
   cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/appellation/date&gt; ;
   rdf:value &quot;</xsl:text>
     <xsl:value-of select="@dateWritten"/>
-    <xsl:text>&quot; ;
-  rdf:value &quot;</xsl:text>
-    <xsl:value-of select="$date"/>
     <xsl:text>&quot; .
     
 </xsl:text>
