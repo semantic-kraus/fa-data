@@ -1,5 +1,5 @@
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix fa: <https://sk.acdh.oeaw.ac.at/project/fackel-online> .
+@prefix fa: <https://sk.acdh.oeaw.ac.at/project/fackel> .
 @prefix sk: <https://sk.acdh.oeaw.ac.at/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
@@ -8,5 +8,5 @@ fa: a <http://www.w3.org/ns/sparql-service-description#NamedGraph> ;
     rdfs:label "Die Fackel online"@en ;
     dct:title "Die Fackel online"@de ;
     dct:bibliographicCitation """AAC - Austrian Academy Corpus: AAC-FACKEL. Online Version: »Die Fackel. Herausgeber: Karl Kraus, Wien 1899-1936« AAC Digital Edition No 1"""  ;
-    dct:contributor """Die Fackel online was published in 2007 by the 'Austrian Academy Corpus' team (supervision: Prof. Werner Welzig) and was published open access in 2019 (supervision: Prof. Konstanze Fliedl); it is technically maintained and expanded by Andreas Basch B.Sc.
+    dct:contributor """Die Fackel online was published in 2007 by the 'Austrian Academy Corpus' team (supervisor: Prof. Werner Welzig) and was published open access in 2019 (supervisor: Prof. Konstanze Fliedl); it is technically maintained and expanded by Andreas Basch B.Sc.
 The index of persons was created by Peter Michael Braunwarth. Collaborators (most recently): Dr. Barbara Tumfart, Mag. Isabella Schwentner, Astrid Hauer, Miriam Sibitz; technical implementation: Dipl.-Ing. Matej Ďurčo B.Sc., Andreas Basch B.Sc.""" .
