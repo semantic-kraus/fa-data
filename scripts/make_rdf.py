@@ -37,6 +37,8 @@ g = Graph(identifier=project_uri, store=project_store)
 g.bind("cidoc", CIDOC)
 g.bind("frbroo", FRBROO)
 g.bind("sk", SK)
+# adding graph metadata
+g.parse("./data/about.ttl", format="ttl")
 
 entity_type = "person"
 index_file = f"./data/indices/list{entity_type}.xml"
