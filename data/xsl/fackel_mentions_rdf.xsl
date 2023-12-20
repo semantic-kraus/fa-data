@@ -71,6 +71,7 @@
             <xsl:with-param name="text" select="'#INT1 textpassage'"/>
         </xsl:call-template>
 
+        <xsl:if test="string-length(text_id) gt 0">
         <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="text_id"/>
         <xsl:text>/passage/</xsl:text>
@@ -83,6 +84,7 @@
         <xsl:text>&quot;@en</xsl:text>
         <xsl:call-template name="newline-semicolon"/>
 
+        <xsl:if test="string-length(mention_id) gt 0">
         <xsl:text>  cidoc:P1_is_identified_by &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="mention_id"/>
         <xsl:text>/identifier/idno/0&gt;</xsl:text>
@@ -92,7 +94,9 @@
         <xsl:value-of select="mention_id"/>
         <xsl:text>/identifier/idno/1&gt;</xsl:text>
         <xsl:call-template name="newline-semicolon"/>
+        </xsl:if>
 
+        <xsl:if test="string-length(text_id) gt 0">
         <xsl:text>  ns1:R10_is_Text_Passage_of &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="text_id"/>
         <xsl:text>&gt;</xsl:text>
@@ -104,12 +108,14 @@
         <xsl:value-of select="$n"/>
         <xsl:text>&gt;</xsl:text>
         <xsl:call-template name="newline-semicolon"/>
+        </xsl:if>
 
         <xsl:text>  ns1:R44_has_wording &quot;</xsl:text>
         <xsl:value-of
             select="replace(translate(mention_text, '&#x9;&#xa;&#xd;', ' '), '(\s)+', ' ')"/>
         <xsl:text>&quot;</xsl:text>
         <xsl:call-template name="newline-dot-newline"/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="create-INT16-segment">
@@ -119,6 +125,7 @@
             <xsl:with-param name="text" select="'#INT16 segment'"/>
         </xsl:call-template>
 
+        <xsl:if test="string-length(text_id) gt 0">
         <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="text_id"/>
         <xsl:text>/segment/</xsl:text>
@@ -131,17 +138,21 @@
         <xsl:text>"@en</xsl:text>
         <xsl:call-template name="newline-semicolon"/>
 
+        <xsl:if test="string-length(text_id) gt 0">
         <xsl:text>  ns1:R16_incorporates &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="text_id"/>
         <xsl:text>/passage/</xsl:text>
         <xsl:value-of select="$n"/>
         <xsl:text>&gt;</xsl:text>
         <xsl:call-template name="newline-semicolon"/>
+        </xsl:if>
 
+        <xsl:if test="string-length(text_id) gt 0">
         <xsl:text>  ns1:R25_is_segment_of &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="issue_id"/>
         <xsl:text>/published-expression&gt;</xsl:text>
         <xsl:call-template name="newline-semicolon"/>
+        </xsl:if>
 
         <xsl:variable name="url">
             <xsl:call-template name="create-fackel-url">
@@ -161,6 +172,7 @@
             select="replace(translate(mention_text, '&#x9;&#xa;&#xd;', ' '), '(\s)+', ' ')"/>
         <xsl:text>&quot;</xsl:text>
         <xsl:call-template name="newline-dot-newline"/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="create-E42-id-identifier">
@@ -169,7 +181,7 @@
         <xsl:call-template name="comment">
             <xsl:with-param name="text" select="'#E42 id identifier'"/>
         </xsl:call-template>
-
+        <xsl:if test="string-length(mention_id) gt 0">
         <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="mention_id"/>
         <xsl:text>/identifier/idno/0&gt; a cidoc:E42_Identifier</xsl:text>
@@ -183,17 +195,22 @@
         <xsl:text>  cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/idno/xml-id&gt;</xsl:text>
         <xsl:call-template name="newline-semicolon"/>
 
+        <xsl:if test="string-length(text_id) gt 0">
         <xsl:text>  cidoc:P1i_identifies &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="text_id"/>
         <xsl:text>/passage/</xsl:text>
         <xsl:value-of select="$n"/>
         <xsl:text>&gt;</xsl:text>
         <xsl:call-template name="newline-semicolon"/>
+        </xsl:if>
 
+        <xsl:if test="string-length(text_id) gt 0">
         <xsl:text>  rdf:value &quot;</xsl:text>
         <xsl:value-of select="mention_id"/>
         <xsl:text>&quot;</xsl:text>
         <xsl:call-template name="newline-dot-newline"/>
+        </xsl:if>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="create-E42-permalink-identifier">
@@ -203,6 +220,7 @@
             <xsl:with-param name="text" select="'#E42 permalink identifier'"/>
         </xsl:call-template>
 
+        <xsl:if test="string-length(mention_id) gt 0">
         <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="mention_id"/>
         <xsl:text>/identifier/idno/1&gt; a cidoc:E42_Identifier</xsl:text>
@@ -216,17 +234,20 @@
         <xsl:text>  cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/idno/URL/fackel&gt;</xsl:text>
         <xsl:call-template name="newline-semicolon"/>
 
+        <xsl:if test="string-length(text_id) gt 0">
         <xsl:text>  cidoc:P1i_identifies &lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="text_id"/>
         <xsl:text>/passage/</xsl:text>
         <xsl:value-of select="$n"/>
         <xsl:text>&gt;</xsl:text>
         <xsl:call-template name="newline-semicolon"/>
+        </xsl:if>
 
         <xsl:text>  rdf:value &quot;</xsl:text>
         <xsl:call-template name="permalink"/>
         <xsl:text>&quot;</xsl:text>
         <xsl:call-template name="newline-dot-newline"/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="create-INT2-actualized-feature">
@@ -236,6 +257,7 @@
             <xsl:with-param name="text" select="'#INT2 actualized feature'"/>
         </xsl:call-template>
 
+        <xsl:if test="string-length(text_id) gt 0">
         <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="text_id"/>
         <xsl:text>/actualization/</xsl:text>
@@ -254,6 +276,7 @@
         <xsl:value-of select="$n"/>
         <xsl:text>&gt;</xsl:text>
         <xsl:call-template name="newline-dot-newline"/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="create-INT18-reference">
@@ -263,6 +286,7 @@
             <xsl:with-param name="text" select="'#INT18 reference'"/>
         </xsl:call-template>
 
+        <xsl:if test="string-length(text_id) gt 0">
         <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="text_id"/>
         <xsl:text>/reference/</xsl:text>
@@ -279,6 +303,7 @@
         <xsl:value-of select="person_id"/>
         <xsl:text>&gt;</xsl:text>
         <xsl:call-template name="newline-dot-newline"/>
+        </xsl:if>
     </xsl:template>
 
     <!-- helpers -->
