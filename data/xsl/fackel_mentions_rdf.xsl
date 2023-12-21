@@ -181,6 +181,7 @@
         <xsl:call-template name="comment">
             <xsl:with-param name="text" select="'#E42 id identifier'"/>
         </xsl:call-template>
+
         <xsl:if test="string-length(mention_id) gt 0">
         <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/</xsl:text>
         <xsl:value-of select="mention_id"/>
@@ -208,8 +209,8 @@
         <xsl:text>  rdf:value &quot;</xsl:text>
         <xsl:value-of select="mention_id"/>
         <xsl:text>&quot;</xsl:text>
-        <xsl:call-template name="newline-dot-newline"/>
         </xsl:if>
+        <xsl:call-template name="newline-dot-newline"/>
         </xsl:if>
     </xsl:template>
 
