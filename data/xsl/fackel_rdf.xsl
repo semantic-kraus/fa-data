@@ -620,7 +620,7 @@
       <xsl:when test="@titleSource='titleQuart' or @titleSource='quart' or @titleSource='samek' or @titleSource='titleUllmann' or @titleSource='p' or @titleSource='ullmann' or @titleSource='titleSamek' or @titleSource='fromContItem' or @titleSource='contPage' or @titleSource='sideQuart' or @titleSource='fromContItemuart'">
         <xsl:text> ;
   cidoc:P2_has_Type &lt;https://sk.acdh.oeaw.ac.at/types/title/prov&gt; ;
-  prov:wasDerivedFrom &lt;https://sk.acdh.oeaw.ac.at/project/fackel-online&gt;</xsl:text>
+  prov:wasDerivedFrom &lt;https://sk.acdh.oeaw.ac.at/project/fackel&gt;</xsl:text>
       </xsl:when>
       <xsl:when test="@titleSource='pSemKraus' or  @titleSource='semKraus'">
         <xsl:text> ;
