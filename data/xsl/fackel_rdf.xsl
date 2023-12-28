@@ -71,7 +71,7 @@
 
   <xsl:template name="create-root-F24">
     <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/01/published-expression&gt; a frbroo:F24_Publication_Expression ;
-  rdfs:label &quot;Published Periodical: Die Fackel;&quot;@en ;
+  rdfs:label &quot;Published Periodical: Die Fackel&quot;@en ;
   cidoc:P1_is_identified_by &lt;https://sk.acdh.oeaw.ac.at/01/identifier/idno/0&gt; ;
   cidoc:P1_is_identified_by &lt;https://sk.acdh.oeaw.ac.at/01/appellation/0&gt; ;
   frbroo:R5_has_component </xsl:text>
