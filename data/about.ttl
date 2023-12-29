@@ -7,6 +7,8 @@
 fa: a <http://www.w3.org/ns/sparql-service-description#NamedGraph> ;
     rdfs:label "Die Fackel online"@en ;
     dct:title "Die Fackel online"@de ;
-    dct:bibliographicCitation """AAC - Austrian Academy Corpus: AAC-FACKEL. Online Version: 'Die Fackel. Herausgeber: Karl Kraus, Wien 1899�1936'. AAC Digital Edition No 1"""  ;
+    dct:bibliographicCitation "»Die Fackel. Herausgeber: Karl Kraus, Wien 1899-1936«. AAC Digital Edition No 1. Ed. by AAC – Austrian Academy Corpus. 2007ff." ;
     dct:contributor """Die Fackel online was published in 2007 by the 'Austrian Academy Corpus' team (supervisor: Prof. Werner Welzig) and was published open access in 2019 (supervisor: Prof. Konstanze Fliedl); it is technically maintained and expanded by Andreas Basch B.Sc.
-The index of persons was created by Peter Michael Braunwarth. Collaborators (most recently): Dr. Barbara Tumfart, Mag. Isabella Schwentner, Astrid Hauer, Miriam Sibitz; technical implementation: Dipl.-Ing. Matej Ďur�o B.Sc., Andreas Basch B.Sc.""" .
+The index of persons was created by Peter Michael Braunwarth. Collaborators (most recently): Dr. Barbara Tumfart, Mag. Isabella Schwentner, Astrid Hauer, Miriam Sibitz; technical implementation: Dipl.-Ing. Matej Ďurčo B.Sc., Andreas Basch B.Sc.""" ;
+    rdfs:comment "'Die Fackel online' consists of more than 22,000 XML files representing the 36 volumes of Karl Kraus’ periodical 'Die Fackel'. In these texts, person mentions were annotated in over 120,000 text passages, linking 'Die Fackel' to an index of persons with more than 14,000 entries."@en ;
+    dct:source "https://fackel.oeaw.ac.at/" .
