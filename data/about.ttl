@@ -2,9 +2,11 @@
 @prefix fa: <https://sk.acdh.oeaw.ac.at/project/fackel> .
 @prefix sk: <https://sk.acdh.oeaw.ac.at/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
 
 
 fa: a <http://www.w3.org/ns/sparql-service-description#NamedGraph> ;
+    sd:name "Die Fackel online" ;
     rdfs:label "Die Fackel online"@en ;
     dct:title "Die Fackel online"@de ;
     dct:bibliographicCitation "»Die Fackel. Herausgeber: Karl Kraus, Wien 1899-1936«. AAC Digital Edition No 1. Ed. by AAC – Austrian Academy Corpus. 2007ff." ;
