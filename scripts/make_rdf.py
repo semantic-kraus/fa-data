@@ -85,7 +85,6 @@ for x in tqdm(items, total=len(items)):
     g.add((app_uri, RDFS.label, Literal(label_value, lang=lang)))
     g.add((app_uri, RDF.value, Literal(normalize_string(xml_id))))
     g.add((app_uri, CIDOC["P2_has_type"], type_uri))
-    g.add((subj, RDF.type, CIDOC["E21_Person"]))
     g += create_e42_or_custom_class(
         subj,
         x,
