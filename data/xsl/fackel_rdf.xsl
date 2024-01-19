@@ -58,7 +58,7 @@
 @prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .    
 @prefix frbroo: &lt;https://cidoc-crm.org/frbroo/sites/default/files/FRBR2.4-draft.rdfs#&gt; .
 @prefix lk: &lt;https://sk.acdh.oeaw.ac.at/project/legal-kraus&gt; .
-@prefix ns1: &lt;https://w3id.org/lso/intro/Vx/#&gt; .
+@prefix ns1: &lt;https://w3id.org/lso/intro/beta202304#&gt; .
 @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
 @prefix schema: &lt;https://schema.org/&gt; .
@@ -71,7 +71,7 @@
 
   <xsl:template name="create-root-F24">
     <xsl:text>&lt;https://sk.acdh.oeaw.ac.at/01/published-expression&gt; a frbroo:F24_Publication_Expression ;
-  rdfs:label &quot;Published Periodical: Die Fackel;&quot;@en ;
+  rdfs:label &quot;Published Periodical: Die Fackel&quot;@en ;
   cidoc:P1_is_identified_by &lt;https://sk.acdh.oeaw.ac.at/01/identifier/idno/0&gt; ;
   cidoc:P1_is_identified_by &lt;https://sk.acdh.oeaw.ac.at/01/appellation/0&gt; ;
   frbroo:R5_has_component </xsl:text>
@@ -619,12 +619,12 @@
     <xsl:choose>
       <xsl:when test="@titleSource='titleQuart' or @titleSource='quart' or @titleSource='samek' or @titleSource='titleUllmann' or @titleSource='p' or @titleSource='ullmann' or @titleSource='titleSamek' or @titleSource='fromContItem' or @titleSource='contPage' or @titleSource='sideQuart' or @titleSource='fromContItemuart'">
         <xsl:text> ;
-  cidoc:P2_has_Type &lt;https://sk.acdh.oeaw.ac.at/types/title/prov&gt; ;
-  prov:wasDerivedFrom &lt;https://sk.acdh.oeaw.ac.at/project/fackel-online&gt;</xsl:text>
+  cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/title/prov&gt; ;
+  prov:wasDerivedFrom &lt;https://sk.acdh.oeaw.ac.at/project/fackel&gt;</xsl:text>
       </xsl:when>
       <xsl:when test="@titleSource='pSemKraus' or  @titleSource='semKraus'">
         <xsl:text> ;
-  cidoc:P2_has_Type &lt;https://sk.acdh.oeaw.ac.at/types/title/prov&gt; ;
+  cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/title/prov&gt; ;
   prov:wasDerivedFrom &lt;https://sk.acdh.oeaw.ac.at/project/semantic-kraus&gt;</xsl:text>
       </xsl:when>
     </xsl:choose>

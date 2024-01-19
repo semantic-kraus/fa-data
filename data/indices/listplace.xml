@@ -3754,7 +3754,8 @@
 <place xml:id="fa_place00004062"><placeName>Friedenau/Berlin</placeName></place>
 <place xml:id="fa_place00001107"><placeName>Groß Pawlowitz</placeName></place>
 <place xml:id="fa_place00005656"><placeName>Hagen, Gem. Riegsee/Murnau</placeName></place>
-<place xml:id="fa_place00003904"><placeName>Jicin</placeName><idno type="URL" subtype="pmb">https://pmb.acdh.oeaw.ac.at/entity/41660</idno></place>
+		<place xml:id="fa_place00003904"><placeName>Jicin</placeName>
+			<idno type="URL" subtype="geonames">https://sws.geonames.org/3074204/</idno><idno type="URL" subtype="pmb">https://pmb.acdh.oeaw.ac.at/entity/41660</idno></place>
 <place xml:id="fa_place00002871"><placeName>Gloggnitz</placeName><idno type="URL" subtype="pmb">https://pmb.acdh.oeaw.ac.at/entity/90727</idno></place>
 <place xml:id="fa_place00004054"><placeName>Kadolzburg</placeName></place>
 <place xml:id="fa_place00002735"><placeName>Dorfchemnitz</placeName></place>
