@@ -617,9 +617,19 @@
     <xsl:text>&gt;</xsl:text>
     
     <xsl:choose>
-      <xsl:when test="@titleSource='titleQuart' or @titleSource='quart' or @titleSource='samek' or @titleSource='titleUllmann' or @titleSource='p' or @titleSource='ullmann' or @titleSource='titleSamek' or @titleSource='fromContItem' or @titleSource='contPage' or @titleSource='sideQuart' or @titleSource='fromContItemuart'">
+      <xsl:when test="@titleSource='titleQuart' or @titleSource='quart' or @titleSource='p' or @titleSource='fromContItem' or @titleSource='contPage' or @titleSource='sideQuart' or @titleSource='fromContItemuart'">
         <xsl:text> ;
   cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/title/prov&gt; ;
+  prov:wasDerivedFrom &lt;https://sk.acdh.oeaw.ac.at/project/fackel&gt;</xsl:text>
+      </xsl:when>
+      <xsl:when test="@titleSource='titleUllmann' or @titleSource='ullmann'">
+        <xsl:text> ;
+  cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/title/ullmann&gt; ;
+  prov:wasDerivedFrom &lt;https://sk.acdh.oeaw.ac.at/project/fackel&gt;</xsl:text>
+      </xsl:when>
+      <xsl:when test="@titleSource=@titleSource='samek' or @titleSource='titleSamek'">
+        <xsl:text> ;
+  cidoc:P2_has_type &lt;https://sk.acdh.oeaw.ac.at/types/title/samek&gt; ;
   prov:wasDerivedFrom &lt;https://sk.acdh.oeaw.ac.at/project/fackel&gt;</xsl:text>
       </xsl:when>
       <xsl:when test="@titleSource='pSemKraus' or  @titleSource='semKraus'">
